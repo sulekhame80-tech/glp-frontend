@@ -1,0 +1,36 @@
+.carousel-item,
+.carousel-item img,
+.produt-detail .carousel-item img{
+    width:100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+.produt-detail .carousel-item{
+    height: 300px;
+    width:100%;
+}
+.ms-panel-body .accordion .card:last-child,
+.ms-panel-body .alert:last-child,
+.ms-panel-body .progress:last-child,
+.ms-website-performance li.ms-list-item{
+    margin-bottom: 0;
+}
+.cardspage .section-title{
+    font-size: 18px;
+}
+.ms-crop-preview img{
+    width: 100%!important;
+    object-fit: cover;
+}
+@media(max-width: 767px){
+    .ms-graph-labels.column-direction {
+      display: none;
+    }
+    .ms-cropper-controls{
+        flex-wrap: wrap;
+    }
+    .ms-wizard-vertical.ms-form-wizard .tab-content, .ms-wizard-vertical.ms-form-wizard .actions{
+        margin-left: 0;
+    }
+}

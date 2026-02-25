@@ -1,0 +1,53 @@
+[
+    {
+        "id": 1,
+        "img": "assets/img/dashboard/rakhan-potik-1.jpg",
+        "name": "James Zathila",
+        "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In in arcu turpis. Nunc",
+        "moreuser": [
+            {
+                "img": "assets/img/dashboard/rakhan-potik-1.jpg"
+            },
+            {
+                "img": "assets/img/dashboard/rakhan-potik-2.jpg"
+            },
+            {
+                "img": "assets/img/dashboard/rakhan-potik-3.jpg"
+            }
+        ],
+        "totaluser": "+ 12 more"
+    },
+    {
+        "id": 2,
+        "img": "assets/img/dashboard/rakhan-potik-2.jpg",
+        "name": "Raymart Sandiago",
+        "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In in arcu turpis. Nunc",
+        "moreuser": [
+            {
+                "img": "assets/img/dashboard/rakhan-potik-3.jpg"
+            },
+            {
+                "img": "assets/img/dashboard/rakhan-potik-4.jpg"
+            }
+        ],
+        "totaluser": ""
+    },
+    {
+        "id": 3,
+        "img": "assets/img/dashboard/rakhan-potik-1.jpg",
+        "name": "John Doe",
+        "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In in arcu turpis. Nunc",
+        "moreuser": [
+            {
+                "img": "assets/img/dashboard/rakhan-potik-2.jpg"
+            },
+            {
+                "img": "assets/img/dashboard/rakhan-potik-3.jpg"
+            },
+            {
+                "img": "assets/img/dashboard/rakhan-potik-4.jpg"
+            }
+        ],
+        "totaluser": "+ 4 more"
+    }
+]

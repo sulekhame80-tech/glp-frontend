@@ -1,0 +1,110 @@
+[
+    {
+        "id": 1,
+        "img": [
+            "assets/img/dashboard/product-1-530x240.jpg",
+            "assets/img/dashboard/pd-3.jpg",
+            "assets/img/dashboard/pd-2.jpg"
+        ],
+        "title": "Green Crack",
+        "price": 450.50,
+        "category":"Oil",
+        "stock":true,
+        "sku":456789,
+        "shortdesc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nunc velit",
+        "longdesc":"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+        "return":12,
+        "favorite":38.8,
+        "sales":100
+    },
+    {
+        "id": 2,
+        "img": [
+            "assets/img/dashboard/product-2-530x240.jpg",
+            "assets/img/dashboard/pd-3.jpg",
+            "assets/img/dashboard/pd-2.jpg"
+        ],
+        "title": "Hemp Oil",
+        "price": 450.50,
+        "category":"Oil",
+        "stock":true,
+        "sku":456789,
+        "shortdesc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nunc velit",
+        "longdesc":"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+        "return":12,
+        "favorite":38.8,
+        "sales":100
+    },
+    {
+        "id": 3,
+        "img": [
+            "assets/img/dashboard/product-3-530x240.jpg",
+            "assets/img/dashboard/pd-3.jpg",
+            "assets/img/dashboard/pd-2.jpg"
+        ],
+        "title": "Gummy Bears",
+        "price": 450.50,
+        "category":"Oil",
+        "stock":true,
+        "sku":456789,
+        "shortdesc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nunc velit",
+        "longdesc":"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+        "return":12,
+        "favorite":38.8,
+        "sales":100
+    },
+    {
+        "id": 4,
+        "img": [
+            "assets/img/dashboard/product-3-530x240.jpg",
+            "assets/img/dashboard/pd-3.jpg",
+            "assets/img/dashboard/pd-2.jpg"
+        ],
+        "title": "Purple Haze",
+        "price": 450.50,
+        "category":"Oil",
+        "stock":true,
+        "sku":456789,
+        "shortdesc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nunc velit",
+        "longdesc":"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+        "return":12,
+        "favorite":38.8,
+        "sales":100
+    },
+    {
+        "id": 5,
+        "img": [
+            "assets/img/dashboard/product-1-530x240.jpg",
+            "assets/img/dashboard/pd-3.jpg",
+            "assets/img/dashboard/pd-2.jpg"
+        ],
+        "title": "UK Cheese",
+        "price": 450.50,
+        "category":"Oil",
+        "stock":true,
+        "sku":456789,
+        "shortdesc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nunc velit",
+        "longdesc":"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+        "return":12,
+        "favorite":38.8,
+        "sales":100
+    },
+    {
+        "id": 6,
+        "img": [
+            "assets/img/dashboard/product-2-530x240.jpg",
+            "assets/img/dashboard/pd-3.jpg",
+            "assets/img/dashboard/pd-2.jpg"
+        ],
+        "title": "Tahoe OG",
+        "price": 450.50,
+        "category":"Oil",
+        "stock":false,
+        "sku":456789,
+        "shortdesc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nunc velit",
+        "longdesc":"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+        "return":12,
+        "favorite":38.8,
+        "sales":100
+    }
+]

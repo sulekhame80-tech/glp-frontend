@@ -1,0 +1,34 @@
+import React, { Component } from 'react';
+
+class Profile extends Component {
+    render() {
+        return (
+            <div className="col-xl-4 col-md-12">
+                <div className="ms-card ms-widget ms-profile-widget">
+                    <div className="ms-card-img">
+                        <img src={process.env.PUBLIC_URL + "/assets/img/dashboard/widgets-bg.jpg"} alt="card_img" />
+                    </div>
+                    <img src={process.env.PUBLIC_URL + "/assets/img/dashboard/rakhan-potik-2.jpg"} className="ms-img-large ms-img-round ms-user-img" alt="people" />
+                    <div className="ms-card-body">
+                        <h2>Anny Farisha</h2>
+                        <span>Web Developer</span>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In in arcu turpis. Nunc</p>
+                        <button type="button" className="btn btn-gradient-primary" name="button"><i className="material-icons">person_add</i> Follow</button>
+                        <ul className="ms-profile-stats">
+                            <li>
+                                <h3 className="ms-count">5790</h3>
+                                <span>Followers</span>
+                            </li>
+                            <li>
+                                <h3 className="ms-count">4.8</h3>
+                                <span>User Rating</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+}
+
+export default Profile;

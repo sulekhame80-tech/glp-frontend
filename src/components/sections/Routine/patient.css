@@ -1,0 +1,346 @@
+/* ===== RESET (SAFE FOR ALL BROWSERS) ===== */
+* {
+  box-sizing: border-box;
+}
+
+/* ===== BACKDROP ===== */
+.modal-backdrop-p {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 10px;
+}
+
+/* ===== MODAL BOX ===== */
+.modal-box-p {
+  background-color: #ffffff;
+  width: 100%;
+  max-width: 820px;
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== HEADER ===== */
+.modal-header-p {
+  padding: 12px 16px;
+  background-color: #0c496b;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* ===== BODY ===== */
+.modal-body-p {
+  padding: 16px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  max-height: calc(100vh - 140px);
+  overflow-y: auto;
+}
+
+/* Inputs */
+.modal-body-p input,
+.modal-body-p select,
+.modal-body-p textarea {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #cfcfcf;
+  border-radius: 5px;
+  background-color: #fff;
+}
+
+/* Focus */
+.modal-body-p input:focus,
+.modal-body-p select:focus,
+.modal-body-p textarea:focus {
+  border-color: #1976d2;
+  outline: none;
+}
+
+
+
+/* ===== FOOTER ===== */
+.modal-footer-p {
+  padding: 12px 16px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  background-color: #f2f2f2;
+}
+
+/* Buttons */
+.modal-btn-p {
+  padding: 8px 18px;
+  font-size: 14px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+}
+
+.modal-btn-p.primary {
+  background-color: #072c51;
+  color: #fff;
+}
+.modal-btn.cancel {
+  background-color: #e0e0e0;
+  color: #3a8c41;
+}
+@media (max-width: 768px) {
+  .modal-box-p {
+    max-width: 100%;
+    border-radius: 6px;
+  }
+
+  .modal-body-p {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-body-p textarea {
+    grid-column: span 1;
+  }
+
+  .modal-footer-p {
+    flex-direction: column;
+  }
+
+  .modal-btn-p {
+    width: 100%;
+  }
+}
+@media (max-width: 480px) {
+  .modal-header-p {
+    font-size: 15px;
+    text-align: center;
+  }
+
+  .modal-body-p {
+    padding: 12px;
+  }
+
+  .modal-body-p input,
+  .modal-body-p select,
+  .modal-body-p textarea {
+    font-size: 13px;
+    padding: 9px;
+  }
+}
+.patient-container {
+  padding: 20px;
+  background: #f5f7fa;
+  min-height: 100vh;
+}
+
+.patient-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.patient-header h3 {
+  margin: 0;
+  font-size: 20px;
+  color: #333;
+}
+
+.add-btn {
+  background-color: #1976d2;
+  color: #fff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.add-btn:hover {
+  background-color: #125aa0;
+}
+
+.patient-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+}
+
+.patient-table thead {
+  background-color: #e3e7ee;
+}
+
+.patient-table th,
+.patient-table td {
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: left;
+  font-size: 14px;
+}
+
+.patient-table th {
+  color: #444;
+}
+
+.patient-table tbody tr:hover {
+  background-color: #f0f4ff;
+}
+
+/* Pagination container */
+.custom-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin: 20px 0;
+  font-family: Arial, sans-serif;
+  flex-wrap: wrap;
+}
+
+/* Page icons */
+.page-icon {
+  font-size: 20px;
+  color: #38812a; /* main color */
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.page-icon:hover:not(.disabled-icon) {
+  color: #2c6f20; /* hover color */
+}
+
+/* Disabled state */
+.disabled-icon {
+  color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Page info */
+.page-info {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* Responsive for mobile */
+@media (max-width: 480px) {
+  .custom-pagination {
+    gap: 10px;
+  }
+
+  .page-info {
+    font-size: 13px;
+  }
+
+  .page-icon {
+    font-size: 18px;
+  }
+}
+
+/* Container for the routine table */
+.routine-main-container {
+  padding: 20px;
+  height:100vh  ;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  max-width: 1000px;
+  margin: 0 auto;
+  margin-left:15px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+/* Header section with title and add button */
+.routine-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.routine-header h3 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.routine-header .btn-primary {
+ 
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.routine-header .btn-primary:hover {
+  background-color: #2d671f;
+}
+
+/* Table styling */
+.routine-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.routine-table thead {
+  background-color: #9cefee;
+  color: #fff;
+}
+
+.routine-table th,
+.routine-table td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  font-size: 0.95rem;
+}
+
+.routine-table tbody tr:hover {
+  background-color: #f1f6f1;
+}
+
+/* Action icons */
+.action-cell {
+  display: flex;
+  gap: 12px;
+}
+
+.icon {
+  cursor: pointer;
+  font-size: 16px;
+  transition: 0.2s;
+}
+
+.edit-icon {
+  color: #38812a;
+}
+
+.edit-icon:hover {
+  color: #2d671f;
+}
+
+.delete-icon {
+  color: #234da0;
+}
+
+.delete-icon:hover {
+  color: #234da0;
+}
+.download-icon {
+  color: hsl(40, 96%, 49%);
+}
+
+.download-icon:hover {      
+  color: hsl(40, 96%, 49%);
+}

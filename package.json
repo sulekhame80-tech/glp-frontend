@@ -1,0 +1,79 @@
+{
+  "name": "weedoboard",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "dependencies": {
+    "@react-google-maps/api": "^2.19.0",
+    "@testing-library/jest-dom": "^5.14.1",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^14.4.3",
+    "@trendmicro/react-paginations": "^0.6.1",
+    "animate.css": "^4.1.1",
+    "axios": "^1.13.2",
+    "bootstrap": "^4.6.0",
+    "chart.js": "^2.9.4",
+    "classnames": "^2.3.1",
+    "cropperjs": "^1.5.12",
+    "devextreme": "^24.1.5",
+    "devextreme-react": "^24.1.5",
+    "docx": "^9.5.1",
+    "driver.js": "^0.9.8",
+    "exceljs": "^4.4.0",
+    "file-saver": "^2.0.5",
+    "goober": "^2.0.41",
+    "html2canvas": "^1.4.1",
+    "jquery": "^3.6.0",
+    "jquery-ui": "^1.12.1",
+    "jspdf": "^3.0.4",
+    "jspdf-autotable": "^5.0.2",
+    "react": "^18.3.1",
+    "react-bootstrap": "^1.6.1",
+    "react-chartjs-2": "^2.11.2",
+    "react-countdown": "^2.3.2",
+    "react-csv": "^2.2.2",
+    "react-data-table-component": "^6.11.8",
+    "react-data-table-component-extensions": "^1.5.2",
+    "react-dom": "^18.3.1",
+    "react-google-charts": "^3.0.15",
+    "react-icons": "^5.5.0",
+    "react-ion-slider": "^1.0.17",
+    "react-jvectormap": "0.0.16",
+    "react-meta-tags": "^1.0.1",
+    "react-perfect-scrollbar": "^1.5.8",
+    "react-router-dom": "^6.30.2",
+    "react-scripts": "5.0.1",
+    "react-select": "^5.10.2",
+    "react-slick": "^0.27.14",
+    "react-wow": "^1.0.0",
+    "reactstrap": "^8.9.0",
+    "slick-carousel": "^1.8.1",
+    "styled-components": "^5.3.1",
+    "sweetalert2": "^10.16.9",
+    "toastr": "^2.1.4",
+    "web-vitals": "^3.3.1",
+    "xlsx": "^0.18.5"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "ajv": "^6.12.6",
+    "ajv-keywords": "^3.5.2",
+    "eslint": "^8.0.0"
+  }
+}

@@ -1,0 +1,242 @@
+.icon-group {
+  gap: 0 !important;   /* 👈 Removes space between icons */
+}
+
+.icon-btn {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  margin-left: 6px; /* small spacing if needed */
+  position: relative;
+}
+
+/* Hover effect */
+.icon-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+/* Tooltip on hover (custom, looks better than title) */
+.icon-btn::after {
+  content: attr(data-label);
+  position: absolute;
+  bottom: -28px;
+  background: #000;
+  color: #fff;
+  padding: 3px 7px;
+  font-size: 12px;
+  border-radius: 4px;
+  opacity: 0;
+  pointer-events: none;
+  white-space: nowrap;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.icon-btn:hover::after {
+  opacity: 1;
+}
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.8); /* light semi-transparent */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal-box {
+  background: #f8f9fa; /* light gray */
+  padding: 20px;
+  width: 800px; /* wider for 3 columns */
+  max-height: 80vh;
+  
+  border-radius: 8px;
+}
+
+
+/* Horizontal scroll container */
+.table-wrapper {
+  overflow-x: auto;
+  position: relative;
+}
+
+/* Freeze first column HEADER + DATA */
+.rdt_TableCol:first-child,
+.rdt_TableCell:first-child {
+  position: sticky !important;
+  left: 0 !important;
+  z-index: 20 !important;
+  background: #9cefee !important;
+}
+
+/* IMPORTANT: freeze row group wrapper (each row) */
+.rdt_TableRow {
+  position: relative;
+  z-index: 1;
+}
+/* Allow stickiness inside the scroll container */
+.rdt_TableBody {
+  overflow: visible !important;
+  position: relative !important;
+  z-index: 1;
+}
+/* Add resizer handle */
+.rdt_TableCol {
+  position: relative;
+}
+
+.resizable {
+  position: relative;
+}
+
+/* resize handle on right side */
+.resize-handle {
+  width: 6px;
+  cursor: col-resize;
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+}
+
+/* ---------- SECTION BLOCK CARD ---------- */
+.section-block {
+  background: #ffffff;
+  border: 1px solid #dce3eb;
+  border-radius: 10px;
+  padding: 20px 25px;
+  margin-bottom: 25px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+
+/* ---------- SECTION TITLE ---------- */
+.section-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #2a3f54;
+  margin-bottom: 15px;
+  border-left: 4px solid #007bff;
+  padding-left: 10px;
+}
+
+/* ---------- FORM FIELD LABEL ---------- */
+.section-block label {
+  font-weight: 600;
+  color: #333;
+}
+
+/* ---------- INPUT & SELECT ---------- */
+.section-block .form-control {
+  border-radius: 6px;
+  border: 1px solid #c8d2db;
+  height: 38px;
+}
+
+.section-block .form-control:focus {
+  border-color: #007bff;
+  box-shadow: none;
+}
+
+/* Show visible resize line on column header */
+.rdt_TableCol {
+  position: relative;
+  border-right: 1px solid #ccc;
+}
+
+/* Resize handle – visible line */
+.resize-handle {
+  position: absolute;
+  top: 0;
+  right: -2px;       /* make the line touch the boundary */
+  width: 6px;        /* easy to grab */
+  height: 100%;
+  cursor: col-resize;
+  background: transparent;
+}
+
+/* On hover show darker line */
+.resize-handle:hover {
+  background: rgba(0, 0, 0, 0.15);
+}
+.rdt_TableCol,
+.rdt_TableCell {
+  transition: width 0.2s ease;
+}
+
+/* -------- LAB RECEIPT FORM UNIQUE CSS -------- */
+
+.lr-container {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 18px;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 0 10px #cccccc50;
+}
+
+.lr-title {
+  text-align: center;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.lr-form {
+  width: 100%;
+}
+
+.lr-group {
+  margin-bottom: 14px;
+  display: flex;
+  flex-direction: column;
+}
+
+.lr-row {
+  display: flex;
+  gap: 15px;
+}
+
+.lr-flex1 {
+  flex: 1;
+}
+
+.lr-fixed {
+  width: 160px;
+}
+
+.lr-input {
+  padding: 8px;
+  border: 1px solid #bbb;
+  border-radius: 6px;
+  outline: none;
+}
+
+.lr-input:focus {
+  border-color: #007bff;
+}
+
+.lr-btn {
+  width: 100%;
+  padding: 10px;
+  background: #0c496b;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  margin-top: 10px;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.lr-btn:disabled {
+  background: #666;
+  cursor: not-allowed;
+}

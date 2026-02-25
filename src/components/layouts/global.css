@@ -1,0 +1,93 @@
+@media (max-width: 768px) {
+  body.ms-aside-left-open .side-nav {
+    transform: translateX(-100%);
+  }
+
+  body.ms-aside-left-open.ms-force-open .side-nav {
+    transform: translateX(0);
+  }
+}
+
+/* Online status pulsing dot animation */
+@keyframes pulseStatus {
+  0% {
+    box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.6);
+  }
+
+  70% {
+    box-shadow: 0 0 0 6px rgba(40, 167, 69, 0);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(40, 167, 69, 0);
+  }
+}
+
+/* ── Navbar: keep everything on one single line ── */
+.navbar.ms-navbar {
+  padding-top: 4px !important;
+  padding-bottom: 4px !important;
+  min-height: 56px !important;
+  align-items: center !important;
+  flex-wrap: nowrap !important;
+  display: flex !important;
+  flex-direction: row !important;
+  margin-bottom: 0 !important;
+}
+
+.navbar.ms-navbar .ms-logo-glow {
+  max-height: 80px !important;
+}
+
+/* Force nav list to be a horizontal row */
+.navbar.ms-navbar ul.ms-nav-list,
+#ms-nav-options {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  gap: 4px !important;
+  margin-bottom: 0 !important;
+  padding: 0 !important;
+  list-style: none !important;
+}
+
+.navbar.ms-navbar .ms-nav-item {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+/* Mini sidebar tooltip on hover */
+.mini-nav-link {
+  position: relative;
+}
+
+.mini-nav-link::after {
+  content: attr(title);
+  position: absolute;
+  left: 74px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.82);
+  color: #fff;
+  font-size: 12px;
+  white-space: nowrap;
+  padding: 4px 10px;
+  border-radius: 4px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  z-index: 9999;
+}
+
+.mini-nav-link:hover::after {
+  opacity: 1;
+}
+
+/* Highlight active mini link on hover */
+.mini-nav-link:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 6px;
+}

@@ -1,0 +1,285 @@
+/* ================= A4 FIX ================= */
+.invoice-container {
+  width: 794px;              /* A4 width */
+  margin: 0 auto;
+  padding: 25px;
+  background: #fff;
+  font-family: Arial, sans-serif;
+  color: #000;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+/* ================= HEADER ================= */
+.invoice-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+}
+
+/* LEFT HEADER */
+.header-left {
+  width: 55%;
+}
+
+.header-left h5 {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 8px 0 3px 0;
+  color: #000;
+}
+
+.header-left p {
+  margin: 4px 0;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.invoice-logo-top {
+  width: 200px;
+  margin-bottom: 10px;
+}
+
+/* RIGHT HEADER */
+.header-right {
+  width: 40%;
+  text-align: center;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.invoice-logo {
+  width: 200px;
+}
+
+/* ================= TITLE ================= */
+.invoice-title {
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+  color: #5cb3cc;
+  margin: 12px 0;
+  padding: 8px 0;
+  border-bottom: 2px solid #5cb3cc;
+  letter-spacing: 0.5px;
+}
+
+/* ================= INFO ================= */
+.invoice-info {
+  display: flex;
+  justify-content: space-between;
+  background: #b8a8d1;
+  padding: 12px 15px;
+  margin-bottom: 15px;
+  font-size: 13px;
+  border-radius: 3px;
+}
+
+.bill-section,
+.invoice-section {
+  flex: 1;
+}
+
+.invoice-section {
+  text-align: right;
+}
+
+.section-label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 6px;
+  color: #333;
+}
+
+.bill-name {
+  font-weight: bold;
+  font-size: 14px;
+  margin: 0;
+  color: #000;
+}
+
+.invoice-info p {
+  margin: 3px 0;
+  color: #333;
+}
+
+/* ================= TABLE ================= */
+.invoice-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 15px 0;
+  border: 1px solid #000;
+}
+
+.invoice-table th {
+  background: #00a3d9;
+  color: white;
+  font-weight: bold;
+  padding: 10px;
+  text-align: left;
+  border: 1px solid #000;
+  font-size: 13px;
+}
+
+.invoice-table td {
+  border: 1px solid #000;
+  padding: 10px;
+  font-size: 13px;
+}
+
+.invoice-table tbody tr {
+  background: #fff;
+}
+
+/* ================= SUMMARY ================= */
+.invoice-summary-full {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+  gap: 20px;
+}
+
+.left-summary {
+  width: 45%;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.left-summary p {
+  margin: 5px 0;
+}
+
+.left-summary b {
+  font-weight: bold;
+}
+
+.right-summary {
+  width: 50%;
+}
+
+.right-summary .row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 12px;
+  border-bottom: 1px solid #ddd;
+  font-size: 13px;
+  background: #fff;
+}
+
+.right-summary .total {
+  background: #00a3d9;
+  color: white;
+  font-weight: bold;
+  border: none;
+  padding: 10px 12px;
+}
+
+.right-summary .total span:first-child {
+  font-weight: bold;
+}
+
+/* ================= FOOTER HEADER ================= */
+.invoice-footer-header {
+  display: flex;
+  justify-content: space-between;
+  background: #b8a8d1;
+  padding: 10px 15px;
+  margin-top: 15px;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.footer-left-label {
+  flex: 1;
+}
+
+.footer-right-label {
+  flex: 1;
+  text-align: right;
+}
+
+/* ================= FOOTER ================= */
+.invoice-bottom {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0;
+  font-size: 12px;
+  padding-top: 10px;
+  gap: 15px;
+}
+
+.invoice-bottom > div {
+  flex: 1;
+}
+
+.invoice-bottom p {
+  margin: 4px 0;
+  line-height: 1.5;
+}
+
+.invoice-bottom b {
+  font-weight: bold;
+}
+
+.qr-section {
+  text-align: center;
+  flex: 0 0 auto;
+  width: 160px;
+}
+
+.qr-section p {
+  font-weight: bold;
+  margin-bottom: 8px;
+  font-size: 12px;
+}
+
+.qr-image {
+  width: 140px;
+  height: 140px;
+  margin-top: 5px;
+}
+
+.signatory {
+  text-align: right;
+  padding-top: 20px;
+}
+
+.signatory p {
+  margin: 8px 0;
+  font-weight: bold;
+  font-size: 12px;
+}
+
+/* ================= BUTTON ================= */
+#downloadBtn {
+  margin-top: 20px !important;
+  background: #00a3d9 !important;
+  border: none !important;
+  padding: 10px 20px !important;
+  font-weight: bold !important;
+  color: white !important;
+}
+
+#downloadBtn:hover {
+  background: #0088b8 !important;
+}
+
+/* ================= TEXT ================= */
+.small {
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+/* ================= PRINT STYLES ================= */
+@media print {
+  .invoice-container {
+    width: 100%;
+    padding: 0;
+    box-shadow: none;
+  }
+  
+  #downloadBtn {
+    display: none !important;
+  }
+}
