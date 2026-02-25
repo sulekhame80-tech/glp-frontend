@@ -1,13 +1,16 @@
-import React, { useState, useEffect } from "react";
-import { getTechnicianApi,updatetechnicianApi } from "../../api/endpoint";
+import React, { useState, useEffect, useContext } from "react";
+import { getTechnicianApi, updatetechnicianApi } from "../../api/endpoint";
 import Breadcrumb from "../../layouts/Breadcrumb";
-import UserTable from "./Usertable";
-function ProfilePage() {
-  const loggedInUser = localStorage.getItem("user_name") ;
-const loggedInUserRole = localStorage.getItem("user_role") ;
-console.log("role with name", loggedInUserRole, loggedInUser)
+import { UserContext } from "../../../UserContext";
 
+function ProfilePage() {
+
+  // ✅ Logged-in user from Context
+  const { userName, role, location } = useContext(UserContext);
+
+  // ✅ Initial state
   const [formData, setFormData] = useState({
+    user_name: "",
     email: "",
     mobile_no: "",
     bank_name: "",
@@ -16,18 +19,66 @@ console.log("role with name", loggedInUserRole, loggedInUser)
     ifsc_code: "",
     saving_current: "",
     gst: "",
-    age:"",
-    technician_name:"",
-    medical_history:"",
-     blood_group:"",
-     address:"",
-    created_by: loggedInUser,
+    age: "",
+    technician_name: "",
+    medical_history: "",
+    blood_group: "",
+    address: "",
+    created_by: "",
   });
 
+  // --------------------------------------------------
+  // ✅ SET USERNAME WHEN CONTEXT LOADS
+  // --------------------------------------------------
   useEffect(() => {
-    setFormData((prev) => ({ ...prev, created_by: loggedInUser }));
-  }, [loggedInUser]);
+    if (userName) {
+      setFormData((prev) => ({
+        ...prev,
+        user_name: userName,
+        created_by: userName,
+      }));
+    }
+  }, [userName]);
+useEffect(() => {
+  if (!userName) return;
 
+  const fetchProfile = async () => {
+    try {
+      const res = await getTechnicianApi(userName);
+
+      if (res?.data?.status === "success") {
+        const { login, technician } = res.data;
+
+        setFormData({
+          user_name: login.user_name || "",
+          email: login.email || "",
+          mobile_no: login.mobile_no || "",
+          bank_name: login.bank_name || "",
+          account_no: login.account_no || "",
+          branch_name: login.branch_name || "",
+          ifsc_code: login.ifsc_code || "",
+          saving_current: login.saving_current || "",
+          gst: login.gst || "",
+
+          technician_name: technician?.technician_name || "",
+          age: technician?.age || "",
+          address: technician?.address || "",
+          medical_history: technician?.medical_history || "",
+          blood_group: technician?.blood_group || "",
+
+          created_by: login.created_by || userName,
+        });
+      }
+    } catch (err) {
+      console.error("FETCH PROFILE ERROR:", err);
+    }
+  };
+
+  fetchProfile();
+}, [userName]);
+  // --------------------------------------------------
+  // INPUT CHANGE HANDLER
+  // --------------------------------------------------
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -35,47 +86,45 @@ console.log("role with name", loggedInUserRole, loggedInUser)
     });
   };
 
-  // -------------------- SUBMIT FUNCTION WITH API CALL --------------------
-const handleSubmit = async (e) => { 
-  e.preventDefault();
+  // --------------------------------------------------
+  // SUBMIT
+  // --------------------------------------------------
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  if (!formData.technician_name || !formData.email || !formData.mobile_no) {
-    alert("Please fill required fields");
-    return;
-  }
+    if (!formData.technician_name || !formData.email || !formData.mobile_no) {
+      alert("Please fill required fields");
+      return;
+    }
 
-  const payload = {
-    username: loggedInUser,   // IMPORTANT!
+   const payload = {
+  username: userName,
+  email: formData.email,
+  mobile_no: formData.mobile_no,
+  bank_name: formData.bank_name,
+  account_no: formData.account_no,
+  branch_name: formData.branch_name,
+  ifsc_code: formData.ifsc_code,
+  saving_current: formData.saving_current,
+  gst: formData.gst,
 
-    // LOGIN table fields
-    email: formData.email,
-    mobile_no: formData.mobile_no,
-    bank_name: formData.bank_name,
-    account_no: formData.account_no,
-    branch_name: formData.branch_name,
-    ifsc_code: formData.ifsc_code,
-    saving_current: formData.saving_current,
-    gst: formData.gst,
+  technician_name: formData.technician_name,
+  age: formData.age,
+  address: formData.address,
+  medical_history: formData.medical_history,
+  blood_group: formData.blood_group,
 
-    // TECHNICIAN table
-    technician_name: formData.technician_name,
-    email_id: formData.email,
-    age: formData.age,
-    address: formData.address,
-    medical_history: formData.medical_history,
-    blood_group: formData.blood_group,
-
-    modified_by: loggedInUser,
-  };
-
-  try {
-    const response = await updatetechnicianApi(payload);
-    alert("Profile updated successfully!");
-  } catch (err) {
-    console.error("UPDATE ERROR:", err);
-    alert("Update failed. Check console.");
-  }
+  modified_by: userName,
 };
+
+    try {
+      await updatetechnicianApi(payload);
+      alert("Profile updated successfully!");
+    } catch (err) {
+      console.error("UPDATE ERROR:", err);
+      alert("Update failed. Check console.");
+    }
+  };
 
   return (
     <div className="ms-content-wrapper">
@@ -100,9 +149,9 @@ const handleSubmit = async (e) => {
                       className="form-control"
                       value={formData.user_name}
                       onChange={handleChange}
-                      required
+                      disabled
                     />
-                  </div>*/}
+                  </div>
  <div className="col-md-4 mb-3">
       <label>Technician Name *</label>
       <input
@@ -127,6 +176,41 @@ const handleSubmit = async (e) => {
                     />
                   </div>
 
+                 
+                </div>
+                <div className="row">
+ <div className="col-md-4 mb-3">
+      <label>Age</label>
+      <input
+        type="number"
+        name="age"
+        className="form-control"
+        value={formData.age}
+        onChange={handleChange}
+      />
+    </div>
+     <div className="col-md-4 mb-3">
+                    <label>Branch Name</label>
+                    <input
+                      type="text"
+                      name="branch_name"
+                      className="form-control"
+                      value={formData.branch_name}
+                      onChange={handleChange}
+                    />
+                  </div>
+                   <div className="col-md-4 mb-3">
+      <label>Address</label>
+      <textarea
+        type="text"
+        name="address"
+        className="form-control"
+        value={formData.address}
+        onChange={handleChange}
+      />
+    </div>
+               </div>
+               <div className="row">
                   <div className="col-md-4 mb-3">
                     <label>Mobile No </label>
                     <input
@@ -159,26 +243,9 @@ const handleSubmit = async (e) => {
                       onChange={handleChange}
                     />
                   </div>
-                  <div className="col-md-4 mb-3">
-                    <label>Branch Name</label>
-                    <input
-                      type="text"
-                      name="branch_name"
-                      className="form-control"
-                      value={formData.branch_name}
-                      onChange={handleChange}
-                    />
                   </div>
-                </div>
-
-               
                 <div className="row">
                  
-
-                 
-
-                  
-
                   <div className="col-md-4 mb-3">
                     <label>IFSC Code</label>
                     <input
@@ -204,7 +271,24 @@ const handleSubmit = async (e) => {
                     </select>
                   </div>
 
-                  {formData.saving_current === "Current" && (
+                  
+                  
+   <div className="col-md-4 mb-3">
+      <label>Blood Group</label>
+      <input
+        type="text"
+        name="blood_group"
+        className="form-control"
+        value={formData.blood_group}
+        onChange={handleChange}
+      />
+    </div>
+
+                </div>
+
+  <div className="row">
+    
+   {formData.saving_current === "Current" && (
                     <div className="col-md-4 mb-3">
                       <label>GST Number</label>
                       <input
@@ -216,41 +300,6 @@ const handleSubmit = async (e) => {
                       />
                     </div>
                   )}
-                  
-    <div className="col-md-4 mb-3">
-      <label>Age</label>
-      <input
-        type="number"
-        name="age"
-        className="form-control"
-        value={formData.age}
-        onChange={handleChange}
-      />
-    </div>
-                </div>
-
-  <div className="row">
-    <div className="col-md-4 mb-3">
-      <label>Blood Group</label>
-      <input
-        type="text"
-        name="blood_group"
-        className="form-control"
-        value={formData.blood_group}
-        onChange={handleChange}
-      />
-    </div>
-
-    <div className="col-md-4 mb-3">
-      <label>Address</label>
-      <textarea
-        type="text"
-        name="address"
-        className="form-control"
-        value={formData.address}
-        onChange={handleChange}
-      />
-    </div>
 
     <div className="col-md-4 mb-3">
       <label>Medical History</label>
@@ -285,7 +334,7 @@ const handleSubmit = async (e) => {
         <p>
 
         </p>
-       <UserTable/>*/}
+       
       </div>
     </div>
   );

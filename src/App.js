@@ -33,11 +33,7 @@ const Clientmanagement = React.lazy(() => import("./components/pages/dashboard/C
 
 // Order Page
 const OrderReg = React.lazy(() => import("./components/pages/order/OrderReg"));
-//const Productgrid = React.lazy(() => import("./components/pages/product/Productgrid"));
-//const Productdetail = React.lazy(() => import("./components/pages/product/Productdetail"));
-//const Cancelproduct = React.lazy(() => import("./components/pages/product/Cancelproduct"));
-//const Returnproduct = React.lazy(() => import("./components/pages/product/Returnproduct"));
-// Customer Page
+
 const TestPage = React.lazy(() => import("./components/pages/test/TestPage"));
 const Reviews = React.lazy(() => import("./components/pages/test/Reviews"));
 // Invoice
@@ -107,6 +103,7 @@ function App() {
               />
             }
           />
+          {/*}
          <Route path="/" element={<Home />} />*/}
           <Route path="/dashboard/web-analytics" element={<Webanalytics />} />
           <Route path="/dashboard/social-media" element={<Socialmedia />} />

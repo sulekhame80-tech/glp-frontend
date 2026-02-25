@@ -127,7 +127,7 @@ function Sidenav() {
             </li>
           )}
 
-          {/* Profile (Employee only) — direct link */}
+      
           {finalRole === 'Employee' && (
             <li className="menu-item">
               <Link to="/profile" onClick={handleLinkClick}>
@@ -135,7 +135,7 @@ function Sidenav() {
               </Link>
             </li>
           )}
-
+ 
           {/* Invoice — dropdown */}
           {(finalRole === 'Super Admin' || finalRole === 'Manager') && (
             <li className="menu-item">

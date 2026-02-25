@@ -4,14 +4,15 @@ import DataTable from "react-data-table-component";
 import { FiEdit, FiTrash2 } from "react-icons/fi";
 import "./UserTable.css";
 import Breadcrumb from "../../layouts/Breadcrumb";
-
+import { useContext } from "react";
+import { UserContext } from "../../../UserContext";
 function UserTable({ onEdit }) {
   const [users, setUsers] = useState([]);
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const [totalRows, setTotalRows] = useState(0);
   const [loading, setLoading] = useState(false);
-
+const { role: loggedInRole } = useContext(UserContext);
   const [editUser, setEditUser] = useState(null); // Show form
   const [locations, setLocations] = useState([]); // Dropdown locations
   const [formData, setFormData] = useState({
@@ -259,7 +260,12 @@ function UserTable({ onEdit }) {
       <div className="table-wrapper">
         <DataTable
           columns={columns}
-          data={users}
+          data={
+  loggedInRole === "Super Admin"
+    ? users
+    : users.filter((u) => u.role !== "Super Admin")
+}
+         // data={users}
           progressPending={loading}
           pagination
           paginationServer
