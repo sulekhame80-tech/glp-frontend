@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:8000";
+const API_URL = "https://glp-backend-production.up.railway.app";
 //const API_URL = "https://genelifeplus.co.in";
 
 /**
@@ -11,10 +11,10 @@ export function addRegisterApi(user) {
   return axios
     .post(`${API_URL}/api/register/`, {
       email: user.email,
-     location_id: user.location_id,
+      location_id: user.location_id,
       password: user.password,
       role: user.role,
-      mobile_no:user.mobile_no,
+      mobile_no: user.mobile_no,
       bank_name: user.bank_name,
       account_no: user.account_no,
       branch_name: user.branch_name,
@@ -153,15 +153,15 @@ export function getOrderByIdApi(id) {
   return axios.get(`${API_URL}/api/orders/${id}/`);
 }
 export const downloadGmailExcelApi = async () => {
-    console.log("📌 downloadGmailExcelApi called"); // log when API is called
-    try {
-        const response = await axios.get(`${API_URL}/api/download-gmail-excels/`);
-        console.log("✅ Gmail API response:", response.data); // log response from backend
-        return response;
-    } catch (error) {
-        console.error("❌ Gmail API error:", error);
-        throw error;
-    }
+  console.log("📌 downloadGmailExcelApi called"); // log when API is called
+  try {
+    const response = await axios.get(`${API_URL}/api/download-gmail-excels/`);
+    console.log("✅ Gmail API response:", response.data); // log response from backend
+    return response;
+  } catch (error) {
+    console.error("❌ Gmail API error:", error);
+    throw error;
+  }
 };
 
 export function updateGpsLocationApi(data) {
@@ -194,7 +194,7 @@ export function getTestsApi(page = 1, pageSize = 10, search = "") {
       page: page,
       page_size: pageSize,
       search: search || undefined,
-      
+
     },
   });
 }
@@ -259,7 +259,7 @@ export function createInvoiceApi(data) {
 }
 
 
-export function getInvoiceInputApi(order_id) { 
+export function getInvoiceInputApi(order_id) {
   return axios.get(`${API_URL}/api/generate/invoice/`, {
     params: { order_id }
   });
@@ -312,7 +312,7 @@ export function updatetechnicianApi(data) {
 
 export const getDashboardReportApi = (type) => {
   return axios.get(`${API_URL}/api/dashboard-report/`, {
-    params: { type: type } 
+    params: { type: type }
   });
 };
 
@@ -420,9 +420,9 @@ export const getpaymentbybussinessApi = (location, role) => {
 export const getReportSummaryApi = ({ start_date, end_date, location, role } = {}) => {
   const params = {};
   if (start_date) params.start_date = start_date;
- 
+
   if (location) params.location = location;
-  
+
 
   return axios.get(`${API_URL}/api/reports/summary/`, { params });
 };
