@@ -99,7 +99,7 @@ This inquiry was sent from the GeneLife Plus by ${formData.name}.
 
                     {/* Sign In only */}
                     <button className="glp-btn-login" onClick={handleLoginRedirect} id="navbar-signin-btn">
-                        <span className="material-icons" style={{ fontSize: '16px', verticalAlign: 'middle', marginRight: '6px' }}>lock</span>
+                        <span className="material-icons" style={{ fontSize: '16px', verticalAlign: 'middle', marginRight: '6px' }}></span>
                         Sign In
                     </button>
                 </div>
@@ -162,7 +162,7 @@ This inquiry was sent from the GeneLife Plus by ${formData.name}.
                         <p>Complete Range of Laboratory Services</p>
                     </div>
 
-                    <div className="glp-services-grid">
+                    <div className="glp-services-grid" style={{ alignItems: 'center', justifyContent: 'center' }}>
                         {services.map((svc, i) => (
                             <div className="glp-service-card" key={i} style={{ animationDelay: `${i * 0.06}s` }}>
                                 <div className="glp-service-icon">{svc.icon}</div>
@@ -226,7 +226,7 @@ This inquiry was sent from the GeneLife Plus by ${formData.name}.
                         </div>
                         <div className="glp-counseling-right">
                             <div className="glp-counseling-stats">
-                                <div className="glp-cstat"><div className="glp-cstat-num">500+</div><div className="glp-cstat-label">Families Counseled</div></div>
+                                {/* <div className="glp-cstat"><div className="glp-cstat-num">500+</div><div className="glp-cstat-label">Families Counseled</div></div> */}
                                 <div className="glp-cstat"><div className="glp-cstat-num">11</div><div className="glp-cstat-label">Specializations</div></div>
                                 <div className="glp-cstat"><div className="glp-cstat-num">98%</div><div className="glp-cstat-label">Patient Satisfaction</div></div>
                             </div>
@@ -245,7 +245,7 @@ This inquiry was sent from the GeneLife Plus by ${formData.name}.
                     </div>
 
                     <div className="glp-partner-showcase">
-                        <div className="glp-partner-logo-box">
+                        <div className="glp-partner-logo-box" style={{ maxWidth: '800px' }}>
                             <div className="glp-medgenome-logo">
                                 <span className="glp-medgenome-icon">🧬</span>
                                 <div>
@@ -253,7 +253,27 @@ This inquiry was sent from the GeneLife Plus by ${formData.name}.
                                     <small>DIAGNOSTIC LABORATORY</small>
                                 </div>
                             </div>
-                            <p className="glp-partner-desc">India's leading genomics company trusted with over 5 million tests. Our authorized franchise partnership ensures you receive world-class genetic diagnostic services.</p>
+                            {/* <p className="glp-partner-desc" style={{ textAlign: 'left', marginBottom: '20px' }}>
+                                MedGenome is a leading genomics company in India operating South Asia's largest CAP and NABL-accredited laboratory, having processed over 5 million tests. They provide comprehensive, high-quality genetic diagnostic services in oncology, reproductive health, and inherited diseases. Authorized partnership with MedGenome ensures access to specialized, evidence-based genomic insights.
+                            </p> */}
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', textAlign: 'left', background: 'rgba(255,255,255,0.5)', padding: '20px', borderRadius: '12px' }}>
+                                <div>
+                                    <h4 style={{ color: '#1565c0', fontSize: '0.9rem', marginBottom: '8px' }}>🏥 Certifications</h4>
+                                    <p style={{ fontSize: '0.85rem', color: '#546e7a' }}>CAP & NABL Accredited (South Asia's Largest)</p>
+                                </div>
+                                <div>
+                                    <h4 style={{ color: '#1565c0', fontSize: '0.9rem', marginBottom: '8px' }}>🔬 Expertise</h4>
+                                    <p style={{ fontSize: '0.85rem', color: '#546e7a' }}>Oncology, Reproductive Health & Inherited Diseases</p>
+                                </div>
+                                <div>
+                                    <h4 style={{ color: '#1565c0', fontSize: '0.9rem', marginBottom: '8px' }}>🎓 Experience</h4>
+                                    <p style={{ fontSize: '0.85rem', color: '#546e7a' }}>Over 10 years in genomics expertise</p>
+                                </div>
+                                <div>
+                                    <h4 style={{ color: '#1565c0', fontSize: '0.9rem', marginBottom: '8px' }}>👨‍⚕️ Network</h4>
+                                    <p style={{ fontSize: '0.85rem', color: '#546e7a' }}>Trusted by 24,000+ clinicians & 8,000+ hospitals</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -357,8 +377,8 @@ This inquiry was sent from the GeneLife Plus by ${formData.name}.
             <footer className="glp-footer">
                 <div className="glp-container">
                     <div className="glp-footer-top">
-                        <div className="glp-footer-brand">
-                            <img src={process.env.PUBLIC_URL + '/logo.png'} alt="GENELIFE Plus" className="glp-footer-logo" />
+                        <div className="glp-footer-brand" style={{ justifyContent: 'center', alignItems: 'center' }}>
+                            <img src={process.env.PUBLIC_URL + '/logo.png'} alt="GENELIFE Plus" className="glp-footer-logo" style={{ width: '100px', height: '100px' }} />
                             <span>GENELIFE <strong>Plus</strong></span>
                         </div>
                         <div className="glp-footer-links">
