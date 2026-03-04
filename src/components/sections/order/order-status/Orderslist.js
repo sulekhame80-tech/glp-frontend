@@ -477,8 +477,8 @@ function Orderslist() {
               style={{ cursor: isSyncing ? "not-allowed" : "pointer" }}
             >
               {isSyncing ? (
-                <div className="spinner-border spinner-border-sm" role="status">
-                  <span className="visually-hidden">Loading...</span>
+                <div className="spinner-border spinner-border-mini" role="status">
+                  {/* <span className="visually-hidden">Loading...</span> */}
                 </div>
               ) : (
                 <FiDownload size={20} />

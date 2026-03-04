@@ -1,5 +1,6 @@
 .icon-group {
-  gap: 0 !important;   /* 👈 Removes space between icons */
+  gap: 0 !important;
+  /* 👈 Removes space between icons */
 }
 
 .icon-btn {
@@ -11,14 +12,15 @@
   border-radius: 8px;
   cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s;
-  margin-left: 6px; /* small spacing if needed */
+  margin-left: 6px;
+  /* small spacing if needed */
   position: relative;
 }
 
 /* Hover effect */
 .icon-btn:hover {
   transform: scale(1.1);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 /* Tooltip on hover (custom, looks better than title) */
@@ -47,7 +49,8 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(255, 255, 255, 0.8); /* light semi-transparent */
+  background: rgba(255, 255, 255, 0.8);
+  /* light semi-transparent */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -55,11 +58,13 @@
 }
 
 .modal-box {
-  background: #f8f9fa; /* light gray */
+  background: #f8f9fa;
+  /* light gray */
   padding: 20px;
-  width: 800px; /* wider for 3 columns */
+  width: 800px;
+  /* wider for 3 columns */
   max-height: 80vh;
-  
+
   border-radius: 8px;
 }
 
@@ -84,12 +89,14 @@
   position: relative;
   z-index: 1;
 }
+
 /* Allow stickiness inside the scroll container */
 .rdt_TableBody {
   overflow: visible !important;
   position: relative !important;
   z-index: 1;
 }
+
 /* Add resizer handle */
 .rdt_TableCol {
   position: relative;
@@ -157,8 +164,10 @@
 .resize-handle {
   position: absolute;
   top: 0;
-  right: -2px;       /* make the line touch the boundary */
-  width: 6px;        /* easy to grab */
+  right: -2px;
+  /* make the line touch the boundary */
+  width: 6px;
+  /* easy to grab */
   height: 100%;
   cursor: col-resize;
   background: transparent;
@@ -168,6 +177,7 @@
 .resize-handle:hover {
   background: rgba(0, 0, 0, 0.15);
 }
+
 .rdt_TableCol,
 .rdt_TableCell {
   transition: width 0.2s ease;
@@ -239,4 +249,25 @@
 .lr-btn:disabled {
   background: #666;
   cursor: not-allowed;
+}
+
+/* Gmail Sync Spin Animation */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+.spinner-border-mini {
+  width: 1.2rem;
+  height: 1.2rem;
+  border-width: 0.15em;
 }
