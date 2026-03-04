@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { useLocation } from "react-router-dom";
 import Topbar from "./components/layouts/Topbar";
 import Sidebar from "./components/layouts/Sidenav";
@@ -8,46 +8,33 @@ function Layout({ children }) {
   const { userName, role } = useContext(UserContext);
   const location = useLocation();
 
-  // Hide Topbar & Sidebar on login/root
+  // Hide Topbar & Sidebar on login/root/landing
   const hideTopbar =
-    location.pathname === "/login" || location.pathname === "/";
+    location.pathname === "/login" ||
+    location.pathname === "/" ||
+    location.pathname === "/landing";
 
-  // Auto-shrink sidebar when clicking OUTSIDE the sidebar on desktop
-  useEffect(() => {
-    const handleOutsideClick = (e) => {
-      if (window.innerWidth < 768) return;
 
-      const body = document.getElementById("body");
-      if (!body || body.classList.contains("ms-aside-mini")) return;
-
-      // Don't collapse if the click was on the hamburger toggle button
-      const toggler = document.querySelector(".ms-aside-toggler");
-      if (toggler && toggler.contains(e.target)) return;
-
-      // Collapse back to mini
-      body.classList.add("ms-aside-mini");
-    };
-
-    document.addEventListener("click", handleOutsideClick);
-    return () => document.removeEventListener("click", handleOutsideClick);
-  }, []);
 
   return (
     <div id="body" className="ms-body ms-aside-left-open ms-primary-theme">
       {!hideTopbar && (
         <>
           <Topbar user_name={userName} role={role} />
-
-          {/* ⚡ stopPropagation prevents sidebar clicks from triggering outside-click collapser */}
-          <div onClick={(e) => e.stopPropagation()}>
-            <Sidebar user_name={userName} role={role} />
-          </div>
+          <Sidebar user_name={userName} role={role} />
         </>
       )}
 
-      <div className="body-content">
-        {children}
-      </div>
+      {/* Full-screen on landing and login; normal body-content wrapper elsewhere */}
+      {location.pathname === "/landing" || location.pathname === "/" || location.pathname === "/login" ? (
+        <div style={{ width: '100%', minHeight: '100vh', margin: 0, padding: 0, display: 'flex', flexDirection: 'column' }}>
+          {children}
+        </div>
+      ) : (
+        <div className="body-content">
+          {children}
+        </div>
+      )}
 
       {/* Powered By badge */}
       <div

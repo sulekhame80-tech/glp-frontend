@@ -37,6 +37,7 @@
 
 .navbar.ms-navbar .ms-logo-glow {
   max-height: 80px !important;
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.8)) !important;
 }
 
 /* Force nav list to be a horizontal row */

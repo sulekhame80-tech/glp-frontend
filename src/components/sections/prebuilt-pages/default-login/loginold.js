@@ -10,7 +10,7 @@ function Content() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-  
+
   // Get UserContext functions
   const { setUserName, setRole, setLocation } = useContext(UserContext);
 
@@ -67,7 +67,7 @@ function Content() {
       }
     } catch (err) {
       console.error("Login Error:", err);
-      
+
       // Handle specific error cases
       if (err?.response?.status === 400 || err?.response?.status === 401 || err?.response?.status === 404) {
         alert("Invalid username or password");
@@ -84,96 +84,123 @@ function Content() {
   };
 
   return (
-   
-        <div className="ms-auth-col">
-          <div className="ms-auth-form">
-            <Form noValidate validated={validated} onSubmit={handleSubmit}>
-              <h1>Login to Account</h1>
-              <p>Please enter your username and password to continue</p>
 
-              <Form.Group className="mb-3" controlId="validationCustom01">
-                <Form.Label>User Name</Form.Label>
-                <InputGroup>
-                  <Form.Control
-                    required
-                    type="text"
-                    placeholder="username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    Please provide a valid username.
-                  </Form.Control.Feedback>
-                </InputGroup>
-              </Form.Group>
-
-              <Form.Group className="mb-2" controlId="validationCustom02">
-                <Form.Label>Password</Form.Label>
-                <InputGroup>
-                  <Form.Control
-                    required
-                    type="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    Please provide a password.
-                  </Form.Control.Feedback>
-                </InputGroup>
-              </Form.Group>
-
-              <Form.Group controlId="validationCustom03">
-                <Form.Label className="ms-checkbox-wrap">
-                  <input className="form-check-input" type="checkbox" defaultValue />
-                  <i className="ms-checkbox-check" />
-                </Form.Label>
-                <span> Remember Password </span>
-                <Form.Label className="d-block mt-3">
-                  <Link to="#" className="btn-link" onClick={handleShow}>
-                    Forgot Password?
-                  </Link>
-                </Form.Label>
-              </Form.Group>
-
-              <Button type="submit" className="mt-4 d-block w-100">
-                Sign In
-              </Button>
-
-              {/* Social login buttons and register link remain same */}
-            </Form>
-
-            {/* Modal remains same */}
-            <Modal show={show} className="modal-min" onHide={handleClose} centered>
-              <Modal.Body className="text-center">
-                <Fragment>
-                  <button type="button" className="close" onClick={handleClose}>
-                    <span aria-hidden="true">×</span>
-                  </button>
-                  <i className="flaticon-secure-shield d-block" />
-                  <h1>Forgot Password?</h1>
-                  <p> Enter your email to recover your password </p>
-                  <form>
-                    <div className="ms-form-group has-icon">
-                      <input
-                        type="text"
-                        placeholder="Email Address"
-                        className="form-control"
-                        name="forgot-password"
-                      />
-                      <i className="material-icons">email</i>
-                    </div>
-                    <button type="submit" className="btn btn-primary shadow-none">
-                      Reset Password
-                    </button>
-                  </form>
-                </Fragment>
-              </Modal.Body>
-            </Modal>
-          </div>
+    <div style={{
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      minHeight: '100vh',
+      width: '100%',
+      backgroundColor: '#f0f8ff' // keeping this to match landing page, but can revert if needed
+    }}>
+      <div style={{
+        width: '100%',
+        maxWidth: '450px',
+        padding: '40px',
+        background: '#fff',
+        borderRadius: '12px',
+        boxShadow: '0 8px 30px rgba(0,0,0,0.08)',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center'
+      }}>
+        {/* Logo at the top */}
+        <div style={{ textAlign: 'center', marginBottom: '30px', width: '100%' }}>
+          <img
+            src={process.env.PUBLIC_URL + '/logo.png'}
+            alt="GENELIFE Plus"
+            style={{ height: '90px', width: 'auto', objectFit: 'contain', display: 'block', margin: '0 auto 10px' }}
+          />
+          {/* <div style={{ fontSize: '1.2rem', fontWeight: '800', color: '#1565c0', letterSpacing: '0.5px' }}>
+            GENELIFE <span style={{ color: '#2e7d32' }}>Plus</span>
+          </div> */}
         </div>
-     
- 
+
+        <h1 className="text-center mb-" style={{ width: '100%', fontSize: '20px' }}>Login to Account</h1>
+        <p className="text-center mb-4 text-muted" style={{ width: '100%' }}>Please enter your username and password to continue</p>
+
+        <Form noValidate validated={validated} onSubmit={handleSubmit} style={{ width: '100%' }}>
+          <Form.Group className="mb-3" controlId="validationCustom01">
+            <Form.Label className="d-block text-center">User Name</Form.Label>
+            <InputGroup>
+              <Form.Control
+                required
+                type="text"
+                placeholder="username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+              />
+              <Form.Control.Feedback type="invalid">
+                Please provide a valid username.
+              </Form.Control.Feedback>
+            </InputGroup>
+          </Form.Group>
+
+          <Form.Group className="mb-4" controlId="validationCustom02">
+            <Form.Label className="d-block text-center">Password</Form.Label>
+            <InputGroup>
+              <Form.Control
+                required
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <Form.Control.Feedback type="invalid">
+                Please provide a password.
+              </Form.Control.Feedback>
+            </InputGroup>
+          </Form.Group>
+
+          <Form.Group controlId="validationCustom03" className="mb-4">
+            <div className="d-flex flex-column align-items-center">
+              <div className="mb-2">
+                <Form.Label style={{ display: 'inline-flex', alignItems: 'center', cursor: 'pointer', margin: 0 }}>
+                  <input className="form-check-input" type="checkbox" style={{ marginRight: '8px' }} />
+                  <span> Remember Password </span>
+                </Form.Label>
+              </div>
+              <Link to="#" className="btn-link" onClick={handleShow} style={{ color: '#1565c0', textDecoration: 'none' }}>
+                Forgot Password?
+              </Link>
+            </div>
+          </Form.Group>
+
+          <Button type="submit" className="w-100 py-2">
+            Sign In
+          </Button>
+        </Form>
+      </div>
+
+      <Modal show={show} className="modal-min" onHide={handleClose} centered>
+        <Modal.Body className="text-center">
+          <Fragment>
+            <button type="button" className="close" onClick={handleClose}>
+              <span aria-hidden="true">×</span>
+            </button>
+            <i className="flaticon-secure-shield d-block" />
+            <h1>Forgot Password?</h1>
+            <p> Enter your email to recover your password </p>
+            <form onSubmit={(e) => e.preventDefault()}>
+              <div className="ms-form-group has-icon">
+                <input
+                  type="text"
+                  placeholder="Email Address"
+                  className="form-control"
+                  name="forgot-password"
+                />
+                <i className="material-icons">email</i>
+              </div>
+              <button type="submit" className="btn btn-primary shadow-none" onClick={handleClose}>
+                Reset Password
+              </button>
+            </form>
+          </Fragment>
+        </Modal.Body>
+      </Modal>
+    </div>
+
+
   );
 }
 

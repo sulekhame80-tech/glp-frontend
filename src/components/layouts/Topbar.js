@@ -137,12 +137,12 @@ function Topbar() {
         </div>
 
         <div className="ml-2">
-          <Link className="p-0" to="/">
+          <Link className="p-0" to="/" title="Go to GENELIFE Plus Home">
             <img
               src={process.env.PUBLIC_URL + "/logo.png"}
-              alt="logo"
+              alt="GENELIFE Plus Home"
               className="ms-logo-glow"
-              style={{ maxHeight: "60px", width: "auto", objectFit: "contain" }}
+              style={{ maxHeight: "60px", width: "auto", objectFit: "contain", cursor: "pointer" }}
             />
           </Link>
         </div>

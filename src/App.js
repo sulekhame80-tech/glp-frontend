@@ -1,7 +1,8 @@
-import React, { Suspense ,useEffect,useState, useContext} from 'react';
-import { BrowserRouter as Router, Route, Routes,useLocation, Navigate } from 'react-router-dom';
+import React, { Suspense, useEffect, useState, useContext } from 'react';
+import { BrowserRouter as Router, Route, Routes, useLocation, Navigate } from 'react-router-dom';
 //import Content from './components/sections/prebuilt-pages/default-login/Content';
 import Content from './components/sections/prebuilt-pages/default-login/loginold';
+import LandingPage from './components/pages/LandingPage';
 import Sidebar from './components/layouts/Sidenav';
 import Topbar from './components/layouts/Topbar';
 import Attendance from "./components/pages/attendance/Attendance";
@@ -78,102 +79,103 @@ function App() {
     return <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>Loading...</div>;
   }
 
-  // If not authenticated and not on login page, redirect to login
+  // Smart Redirect: If authenticated and on public pages, redirect to dashboard
+  if (isAuthenticated && (location.pathname === '/' || location.pathname === '/login')) {
+    return <Navigate to="/dashboard/web-analytics" replace />;
+  }
+
+  // If not authenticated and not on public pages, redirect to login
   if (!isAuthenticated && location.pathname !== '/' && location.pathname !== '/login') {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/login" replace />;
   }
 
   return (
     <>
       <Suspense fallback={<div>Loading...</div>}>
         <Preloader />
-         
+
         <Layout >
-        <Routes>
-        
-          {/* Dashboard */}
-           <Route path="/" element={<Content
-               
-              />} />
-          <Route
-            path="/login"
-            element={
-              <Content
-               
-              />
-            }
-          />
-          {/*}
+          <Routes>
+
+            {/* Default Landing Page */}
+            <Route path="/" element={<LandingPage />} />
+
+            {/* Landing Page (Legacy path keep for now or remove if not needed) */}
+            <Route path="/landing" element={<LandingPage />} />
+
+            {/* Auth */}
+            <Route path="/login" element={<Content />} />
+            {/*}
          <Route path="/" element={<Home />} />*/}
-          <Route path="/dashboard/web-analytics" element={<Webanalytics />} />
-          <Route path="/dashboard/social-media" element={<Socialmedia />} />
-          <Route path="/dashboard/project-management" element={<Projectmanagement />} />
-          <Route path="/dashboard/client-management" element={<Clientmanagement />} />
-<Route path="/hospital/detail/:id" element={<HospitalDetail />} />
-<Route path="/attendance" element={<Attendance />} />
+            <Route path="/dashboard/web-analytics" element={<Webanalytics />} />
+            <Route path="/dashboard/social-media" element={<Socialmedia />} />
+            <Route path="/dashboard/project-management" element={<Projectmanagement />} />
+            <Route path="/dashboard/client-management" element={<Clientmanagement />} />
+            <Route path="/hospital/detail/:id" element={<HospitalDetail />} />
+            <Route path="/attendance" element={<Attendance />} />
 
-          {/* Order Page */}
-          <Route path="/order/order-status" element={<OrderStatus  />} />
- <Route path="/order/order-reg" element={<OrderReg  />} />
-        <Route path="/order/order-status" element={<OrderStatus  />} />
-  <Route path="/bills/" element={<LabReceiptSubmit  />} />
-         {/* Order Page */}
-          <Route path="/order/order-report/" element={<Report  />} />
- 
-          {/* Product Page */}
+            {/* Order Page */}
+            <Route path="/order/order-status" element={<OrderStatus />} />
+            <Route path="/order/order-reg" element={<OrderReg />} />
+            <Route path="/order/order-status" element={<OrderStatus />} />
+            <Route path="/bills/" element={<LabReceiptSubmit />} />
+            {/* Order Page */}
+            <Route path="/order/order-report/" element={<Report />} />
 
-          <Route path="/RegisterUser/" element={<RegisterUser  />} />
-          <Route path="/Usertable/" element={<UserTable  />} />
-          <Route path="/profile" element={< ProfilePage/>} />
-         
-          {/* Customer Page */}
-          <Route path="/test/master/" element={<TestPage />} />
-              <Route path="/settings/account-settings" element={<MasterPage />} />
-      
-          <Route path="/customer/reviews" element={<Reviews />} />
+            {/* Product Page */}
 
-          {/* Invoice */}
-          <Route path="/invoice/invoice" element={<Invoice />} />
-              <Route path="/invoice-monthly" element={<MonthlyInvoice />} />
-      
-          
-          <Route path="/invoice/invoice-list" element={<Invoicelist />} />
+            <Route path="/RegisterUser/" element={<RegisterUser />} />
+            <Route path="/Usertable/" element={<UserTable />} />
+            <Route path="/profile" element={< ProfilePage />} />
 
-          {/* Add product */}
-          <Route path="/add-hospital/" element={<AddHospital />} />
+            {/* Customer Page */}
+            <Route path="/test/master/" element={<TestPage />} />
+            <Route path="/settings/account-settings" element={<MasterPage />} />
 
-          {/* Pricing */}
-          <Route path="/pricing" element={<Pricing />} />
+            <Route path="/customer/reviews" element={<Reviews />} />
 
-          {/* Shipment */}
-          <Route path="/shipment" element={<Shipment />} />
+            {/* Invoice */}
+            <Route path="/invoice/invoice" element={<Invoice />} />
+            <Route path="/invoice-monthly" element={<MonthlyInvoice />} />
 
-          {/* Widgets */}
-          <Route path="/widgets" element={<Widgets />} />
 
-          {/* Prebuilt Pages */}
-          <Route path="/prebuilt-pages/default-login" element={<Defaultlogin />} />
-          <Route path="/prebuilt-pages/modal-login" element={<Modallogin />} />
-          <Route path="/prebuilt-pages/default-register" element={<Defaultregister />} />
-          <Route path="/prebuilt-pages/modal-register" element={<Modalregister />} />
-          <Route path="/prebuilt-pages/lock-screen" element={<Lockscreen />} />
-          <Route path="/prebuilt-pages/coming-soon" element={<Comingsoon />} />
-          <Route path="/prebuilt-pages/error" element={<Error />} />
-          <Route path="/prebuilt-pages/faq" element={<Faq />} />
-          <Route path="/prebuilt-pages/portfolio" element={<Portfolio />} />
-          <Route path="/prebuilt-pages/user-profile" element={<Userprofile />} />
-          <Route path="/prebuilt-pages/invoice" element={<Pageinvoice />} />
-<Route path='/patient-profile' element={<PatientProfile/>} />
-<Route path="/routine-status" element={<RoutineProfile />} />
-          {/* Apps */}
-          <Route path="/apps/chat" element={<Chat />} />
-          <Route path="/apps/email" element={<Email />} />
-          <Route path="/apps/to-do-list" element={<Todolist />} />
-        </Routes>
-        
+            <Route path="/invoice/invoice-list" element={<Invoicelist />} />
+
+            {/* Add product */}
+            <Route path="/add-hospital/" element={<AddHospital />} />
+
+            {/* Pricing */}
+            <Route path="/pricing" element={<Pricing />} />
+
+            {/* Shipment */}
+            <Route path="/shipment" element={<Shipment />} />
+
+            {/* Widgets */}
+            <Route path="/widgets" element={<Widgets />} />
+
+            {/* Prebuilt Pages */}
+            <Route path="/prebuilt-pages/default-login" element={<Defaultlogin />} />
+            <Route path="/prebuilt-pages/modal-login" element={<Modallogin />} />
+            <Route path="/prebuilt-pages/default-register" element={<Defaultregister />} />
+            <Route path="/prebuilt-pages/modal-register" element={<Modalregister />} />
+            <Route path="/prebuilt-pages/lock-screen" element={<Lockscreen />} />
+            <Route path="/prebuilt-pages/coming-soon" element={<Comingsoon />} />
+            <Route path="/prebuilt-pages/error" element={<Error />} />
+            <Route path="/prebuilt-pages/faq" element={<Faq />} />
+            <Route path="/prebuilt-pages/portfolio" element={<Portfolio />} />
+            <Route path="/prebuilt-pages/user-profile" element={<Userprofile />} />
+            <Route path="/prebuilt-pages/invoice" element={<Pageinvoice />} />
+            <Route path='/patient-profile' element={<PatientProfile />} />
+            <Route path="/routine-status" element={<RoutineProfile />} />
+            {/* Apps */}
+            <Route path="/apps/chat" element={<Chat />} />
+            <Route path="/apps/email" element={<Email />} />
+            <Route path="/apps/to-do-list" element={<Todolist />} />
+          </Routes>
+
         </Layout>
-       
-         
+
+
       </Suspense>
     </>
   );

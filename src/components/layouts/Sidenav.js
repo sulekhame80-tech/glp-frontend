@@ -32,17 +32,14 @@ function Sidenav() {
     }
   };
 
-  // Collapse sidebar back to mini (desktop) or close (mobile) when a link is clicked
+  // On mobile: close the flyout when a link is clicked. On desktop: do nothing (stay expanded).
   const handleLinkClick = () => {
-    setActiveAccordion(null); // Close the dropdown menu
+    setActiveAccordion(null); // close any open dropdown
     const body = document.getElementById('body');
-    if (body) {
-      if (window.innerWidth < 768) {
-        body.classList.remove('ms-aside-left-open');
-      } else {
-        body.classList.add('ms-aside-mini');
-      }
+    if (body && window.innerWidth < 768) {
+      body.classList.remove('ms-aside-left-open');
     }
+    // Desktop — sidebar stays expanded; only the hamburger collapses it
   };
 
   // Listen for outside clicks to also close the dropdown when sidebar minimizes
@@ -127,7 +124,7 @@ function Sidenav() {
             </li>
           )}
 
-      
+
           {finalRole === 'Employee' && (
             <li className="menu-item">
               <Link to="/profile" onClick={handleLinkClick}>
@@ -135,7 +132,7 @@ function Sidenav() {
               </Link>
             </li>
           )}
- 
+
           {/* Invoice — dropdown */}
           {(finalRole === 'Super Admin' || finalRole === 'Manager') && (
             <li className="menu-item">
