@@ -10,7 +10,7 @@ class Sweetalerts extends Component {
         return (
             <Fragment>
                 <MetaTags>
-                    <title>Weedoboard React | Sweet Alerts</title>
+                    <title>Genelifeplus | Sweet Alerts</title>
                     <meta
                         name="description"
                         content="#"

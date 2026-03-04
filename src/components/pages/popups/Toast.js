@@ -10,7 +10,7 @@ class Toast extends Component {
         return (
             <Fragment>
                 <MetaTags>
-                    <title>Weedoboard React | Toast</title>
+                    <title>Genelifeplus | Toast</title>
                     <meta
                         name="description"
                         content="#"

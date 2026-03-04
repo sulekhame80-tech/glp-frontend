@@ -10,7 +10,7 @@ class Faq extends Component {
         return (
             <Fragment>
                 <MetaTags>
-                    <title>Weedoboard React | FAQ's</title>
+                    <title>Genelifeplus | FAQ's</title>
                     <meta
                         name="description"
                         content="#"

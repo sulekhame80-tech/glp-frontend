@@ -10,7 +10,7 @@ class Draggables extends Component {
         return (
             <Fragment>
                 <MetaTags>
-                    <title>Weedoboard React | Draggables</title>
+                    <title>Genelifeplus | Draggables</title>
                     <meta
                         name="description"
                         content="#"

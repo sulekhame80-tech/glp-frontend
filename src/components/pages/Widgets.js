@@ -10,7 +10,7 @@ class Widgets extends Component {
         return (
             <Fragment>
                 <MetaTags>
-                    <title>Weedoboard React | Widgets</title>
+                    <title>Genelifeplus | Widgets</title>
                     <meta
                         name="description"
                         content="#"

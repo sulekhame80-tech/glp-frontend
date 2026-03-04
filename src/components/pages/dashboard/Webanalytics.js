@@ -10,7 +10,7 @@ class Webanalytics extends Component {
         return (
             <Fragment>
                 <MetaTags>
-                    <title>Weedoboard React | Web Analytics</title>
+                    <title>Genelifeplus | Web Analytics</title>
                     <meta
                         name="description"
                         content="#"

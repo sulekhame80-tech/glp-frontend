@@ -10,7 +10,7 @@ class Preloaders extends Component {
         return (
             <Fragment>
                 <MetaTags>
-                    <title>Weedoboard React | Preloaders</title>
+                    <title>Genelifeplus | Preloaders</title>
                     <meta
                         name="description"
                         content="#"

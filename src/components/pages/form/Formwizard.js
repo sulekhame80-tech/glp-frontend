@@ -10,7 +10,7 @@ class Formwizard extends Component {
         return (
             <Fragment>
                 <MetaTags>
-                    <title>Weedoboard React | Form Wizard</title>
+                    <title>Genelifeplus | Form Wizard</title>
                     <meta
                         name="description"
                         content="#"

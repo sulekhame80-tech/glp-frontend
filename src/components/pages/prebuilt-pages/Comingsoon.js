@@ -7,7 +7,7 @@ class Comingsoon extends Component {
         return (
             <Fragment>
                 <MetaTags>
-                    <title>Weedoboard React | Coming Soon</title>
+                    <title>Genelifeplus | Coming Soon</title>
                     <meta
                         name="description"
                         content="#"

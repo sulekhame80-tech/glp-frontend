@@ -10,7 +10,7 @@ class Chat extends Component {
         return (
             <Fragment>
                 <MetaTags>
-                    <title>Weedoboard React | Chats</title>
+                    <title>Genelifeplus | Chats</title>
                     <meta
                         name="description"
                         content="#"

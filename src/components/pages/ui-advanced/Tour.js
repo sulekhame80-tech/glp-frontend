@@ -10,7 +10,7 @@ class Tour extends Component {
         return (
             <Fragment>
                 <MetaTags>
-                    <title>Weedoboard React | Tour</title>
+                    <title>Genelifeplus | Tour</title>
                     <meta
                         name="description"
                         content="#"

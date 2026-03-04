@@ -10,7 +10,7 @@ class Badges extends Component {
         return (
             <Fragment>
                 <MetaTags>
-                    <title>Weedoboard React | Badges</title>
+                    <title>Genelifeplus | Badges</title>
                     <meta
                         name="description"
                         content="#"

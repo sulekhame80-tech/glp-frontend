@@ -10,7 +10,7 @@ class Fontawesome extends Component {
         return (
             <Fragment>
                 <MetaTags>
-                    <title>Weedoboard React | Fontawesome</title>
+                    <title>Genelifeplus | Fontawesome</title>
                     <meta
                         name="description"
                         content="#"

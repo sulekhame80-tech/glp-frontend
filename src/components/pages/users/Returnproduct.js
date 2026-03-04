@@ -10,7 +10,7 @@ class Returnproduct extends Component {
         return (
             <Fragment>
                 <MetaTags>
-                    <title>Weedoboard React | Return Product</title>
+                    <title>Genelifeplus | Return Product</title>
                     <meta
                         name="description"
                         content="#"

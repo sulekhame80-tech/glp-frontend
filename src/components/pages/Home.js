@@ -10,7 +10,7 @@ class Home extends Component {
         return (
             <Fragment>
                 <MetaTags>
-                    <title>Weedoboard React | Homepage</title>
+                    <title>Genelifeplus | Homepage</title>
                     <meta
                         name="description"
                         content="#"

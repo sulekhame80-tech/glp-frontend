@@ -10,7 +10,7 @@ class Googlemaps extends Component {
         return (
             <Fragment>
                 <MetaTags>
-                    <title>Weedoboard React | Google Maps</title>
+                    <title>Genelifeplus | Google Maps</title>
                     <meta
                         name="description"
                         content="#"

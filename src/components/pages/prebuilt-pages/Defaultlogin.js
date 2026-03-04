@@ -10,7 +10,7 @@ class Defaultlogin extends Component {
         return (
             <Fragment>
                 <MetaTags>
-                    <title>Weedoboard React | Default Login</title>
+                    <title>Genelifeplus | Default Login</title>
                     <meta
                         name="description"
                         content="#"

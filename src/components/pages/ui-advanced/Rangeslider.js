@@ -10,7 +10,7 @@ class Rangeslider extends Component {
         return (
             <Fragment>
                 <MetaTags>
-                    <title>Weedoboard React | Rangeslider</title>
+                    <title>Genelifeplus | Rangeslider</title>
                     <meta
                         name="description"
                         content="#"

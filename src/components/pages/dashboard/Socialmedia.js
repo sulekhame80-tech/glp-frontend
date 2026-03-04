@@ -10,7 +10,7 @@ class Socialmedia extends Component {
         return (
             <Fragment>
                 <MetaTags>
-                    <title>Weedoboard React | Social Media</title>
+                    <title>Genelifeplus | Social Media</title>
                     <meta
                         name="description"
                         content="#"

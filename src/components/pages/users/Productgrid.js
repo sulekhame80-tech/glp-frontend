@@ -10,7 +10,7 @@ class Productgrid extends Component {
         return (
             <Fragment>
                 <MetaTags>
-                    <title>Weedoboard React | Product Grid</title>
+                    <title>Genelifeplus | Product Grid</title>
                     <meta
                         name="description"
                         content="#"

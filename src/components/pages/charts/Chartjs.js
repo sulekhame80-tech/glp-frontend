@@ -10,7 +10,7 @@ class Chartjs extends Component {
         return (
             <Fragment>
                 <MetaTags>
-                    <title>Weedoboard React | ChartJS</title>
+                    <title>Genelifeplus | ChartJS</title>
                     <meta
                         name="description"
                         content="#"

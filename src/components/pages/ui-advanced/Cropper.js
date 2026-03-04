@@ -10,7 +10,7 @@ class Cropper extends Component {
         return (
             <Fragment>
                 <MetaTags>
-                    <title>Weedoboard React | Cropper</title>
+                    <title>Genelifeplus | Cropper</title>
                     <meta
                         name="description"
                         content="#"

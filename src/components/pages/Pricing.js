@@ -10,7 +10,7 @@ class Pricing extends Component {
         return (
             <Fragment>
                 <MetaTags>
-                    <title>Weedoboard React | Pricing</title>
+                    <title>Genelifeplus | Pricing</title>
                     <meta
                         name="description"
                         content="#"

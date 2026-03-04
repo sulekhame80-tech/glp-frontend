@@ -10,7 +10,7 @@ class Rating extends Component {
         return (
             <Fragment>
                 <MetaTags>
-                    <title>Weedoboard React | Rating</title>
+                    <title>Genelifeplus | Rating</title>
                     <meta
                         name="description"
                         content="#"

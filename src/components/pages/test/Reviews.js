@@ -10,7 +10,7 @@ class Reviews extends Component {
         return (
             <Fragment>
                 <MetaTags>
-                    <title>Weedoboard React | Customer Reviews</title>
+                    <title>Genelifeplus | Customer Reviews</title>
                     <meta
                         name="description"
                         content="#"

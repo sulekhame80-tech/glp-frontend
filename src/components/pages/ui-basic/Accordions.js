@@ -10,7 +10,7 @@ class Accordions extends Component {
         return (
             <Fragment>
                 <MetaTags>
-                    <title>Weedoboard React | Accordions</title>
+                    <title>Genelifeplus | Accordions</title>
                     <meta
                         name="description"
                         content="#"

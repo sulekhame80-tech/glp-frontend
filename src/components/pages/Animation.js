@@ -10,7 +10,7 @@ class Animation extends Component {
         return (
             <Fragment>
                 <MetaTags>
-                    <title>Weedoboard React | Animation</title>
+                    <title>Genelifeplus | Animation</title>
                     <meta
                         name="description"
                         content="#"

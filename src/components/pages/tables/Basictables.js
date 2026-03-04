@@ -10,7 +10,7 @@ class Basictables extends Component {
         return (
             <Fragment>
                 <MetaTags>
-                    <title>Weedoboard React | Basic Tables</title>
+                    <title>Genelifeplus | Basic Tables</title>
                     <meta
                         name="description"
                         content="#"

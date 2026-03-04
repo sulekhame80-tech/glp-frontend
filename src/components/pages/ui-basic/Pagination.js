@@ -10,7 +10,7 @@ class Pagination extends Component {
         return (
             <Fragment>
                 <MetaTags>
-                    <title>Weedoboard React | Pagination</title>
+                    <title>Genelifeplus | Pagination</title>
                     <meta
                         name="description"
                         content="#"

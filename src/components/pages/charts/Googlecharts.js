@@ -10,7 +10,7 @@ class Googlecharts extends Component {
         return (
             <Fragment>
                 <MetaTags>
-                    <title>Weedoboard React | Google Charts</title>
+                    <title>Genelifeplus | Google Charts</title>
                     <meta
                         name="description"
                         content="#"

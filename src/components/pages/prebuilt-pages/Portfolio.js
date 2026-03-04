@@ -10,7 +10,7 @@ class Portfolio extends Component {
         return (
             <Fragment>
                 <MetaTags>
-                    <title>Weedoboard React | Portfolio</title>
+                    <title>Genelifeplus | Portfolio</title>
                     <meta
                         name="description"
                         content="#"

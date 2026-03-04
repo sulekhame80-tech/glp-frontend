@@ -10,7 +10,7 @@ class Cards extends Component {
         return (
             <Fragment>
                 <MetaTags>
-                    <title>Weedoboard React | Cards</title>
+                    <title>Genelifeplus | Cards</title>
                     <meta
                         name="description"
                         content="#"

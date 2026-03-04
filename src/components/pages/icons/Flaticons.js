@@ -10,7 +10,7 @@ class Flaticons extends Component {
         return (
             <Fragment>
                 <MetaTags>
-                    <title>Weedoboard React | Flaticons</title>
+                    <title>Genelifeplus | Flaticons</title>
                     <meta
                         name="description"
                         content="#"

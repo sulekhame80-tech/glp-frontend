@@ -10,7 +10,7 @@ class Email extends Component {
         return (
             <Fragment>
                 <MetaTags>
-                    <title>Weedoboard React | Email</title>
+                    <title>Genelifeplus | Email</title>
                     <meta
                         name="description"
                         content="#"

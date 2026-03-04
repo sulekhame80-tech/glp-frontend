@@ -10,7 +10,7 @@ class Shipment extends Component {
         return (
             <Fragment>
                 <MetaTags>
-                    <title>Weedoboard React | Shipment</title>
+                    <title>Genelifeplus | Shipment</title>
                     <meta
                         name="description"
                         content="#"

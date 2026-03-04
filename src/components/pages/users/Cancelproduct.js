@@ -10,7 +10,7 @@ class Cancelproduct extends Component {
         return (
             <Fragment>
                 <MetaTags>
-                    <title>Weedoboard React | Cancel Product</title>
+                    <title>Genelifeplus | Cancel Product</title>
                     <meta
                         name="description"
                         content="#"

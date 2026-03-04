@@ -10,7 +10,7 @@ class TestPage extends Component {
         return (
             <Fragment>
                 <MetaTags>
-                    <title>Weedoboard React | Customer List</title>
+                    <title>Genelifeplus | Customer List</title>
                     <meta
                         name="description"
                         content="#"

@@ -10,7 +10,7 @@ class Sliders extends Component {
         return (
             <Fragment>
                 <MetaTags>
-                    <title>Weedoboard React | Sliders</title>
+                    <title>Genelifeplus | Sliders</title>
                     <meta
                         name="description"
                         content="#"

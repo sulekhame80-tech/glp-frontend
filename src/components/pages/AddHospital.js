@@ -10,7 +10,7 @@ class AddHospital extends Component {
         return (
             <Fragment>
                 <MetaTags>
-                    <title>Weedoboard React | Add Product</title>
+                    <title>Genelifeplus | Add Product</title>
                     <meta
                         name="description"
                         content="#"

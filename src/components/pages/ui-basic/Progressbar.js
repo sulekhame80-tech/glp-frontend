@@ -10,7 +10,7 @@ class Progressbar extends Component {
         return (
             <Fragment>
                 <MetaTags>
-                    <title>Weedoboard React | Progressbar</title>
+                    <title>Genelifeplus | Progressbar</title>
                     <meta
                         name="description"
                         content="#"

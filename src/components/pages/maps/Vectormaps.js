@@ -10,7 +10,7 @@ class Vectormaps extends Component {
         return (
             <Fragment>
                 <MetaTags>
-                    <title>Weedoboard React | Vector Maps</title>
+                    <title>Genelifeplus | Vector Maps</title>
                     <meta
                         name="description"
                         content="#"

@@ -7,7 +7,7 @@ class Lockscreen extends Component {
         return (
             <Fragment>
                 <MetaTags>
-                    <title>Weedoboard React | Lockscreen</title>
+                    <title>Genelifeplus | Lockscreen</title>
                     <meta
                         name="description"
                         content="#"

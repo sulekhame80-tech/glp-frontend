@@ -10,7 +10,7 @@ class Todolist extends Component {
         return (
             <Fragment>
                 <MetaTags>
-                    <title>Weedoboard React | Todo List</title>
+                    <title>Genelifeplus | Todo List</title>
                     <meta
                         name="description"
                         content="#"

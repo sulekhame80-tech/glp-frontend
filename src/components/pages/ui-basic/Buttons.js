@@ -10,7 +10,7 @@ class Buttons extends Component {
         return (
             <Fragment>
                 <MetaTags>
-                    <title>Weedoboard React | Buttons</title>
+                    <title>Genelifeplus | Buttons</title>
                     <meta
                         name="description"
                         content="#"

@@ -10,7 +10,7 @@ class OrderReg extends Component {
         return (
             <Fragment>
                 <MetaTags>
-                    <title>Weedoboard React | Order Status</title>
+                    <title>Genelifeplus | Order Status</title>
                     <meta
                         name="description"
                         content="#"

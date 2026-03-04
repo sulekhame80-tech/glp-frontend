@@ -10,7 +10,7 @@ class Userprofile extends Component {
         return (
             <Fragment>
                 <MetaTags>
-                    <title>Weedoboard React | User Profile</title>
+                    <title>Genelifeplus | User Profile</title>
                     <meta
                         name="description"
                         content="#"

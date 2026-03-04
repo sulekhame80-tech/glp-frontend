@@ -10,7 +10,7 @@ class Typography extends Component {
         return (
             <Fragment>
                 <MetaTags>
-                    <title>Weedoboard React | Typography</title>
+                    <title>Genelifeplus | Typography</title>
                     <meta
                         name="description"
                         content="#"

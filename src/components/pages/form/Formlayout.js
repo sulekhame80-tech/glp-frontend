@@ -10,7 +10,7 @@ class Formlayout extends Component {
         return (
             <Fragment>
                 <MetaTags>
-                    <title>Weedoboard React | Form Layout</title>
+                    <title>Genelifeplus | Form Layout</title>
                     <meta
                         name="description"
                         content="#"

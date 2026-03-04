@@ -10,7 +10,7 @@ class Invoice extends Component {
         return (
             <Fragment>
                 <MetaTags>
-                    <title>Weedoboard React | Invoice</title>
+                    <title>Genelifeplus | Invoice</title>
                     <meta
                         name="description"
                         content="#"

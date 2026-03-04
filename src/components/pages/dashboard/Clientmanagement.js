@@ -10,7 +10,7 @@ class Clientmanagement extends Component {
         return (
             <Fragment>
                 <MetaTags>
-                    <title>Weedoboard React | Client Management</title>
+                    <title>Genelifeplus | Client Management</title>
                     <meta
                         name="description"
                         content="#"

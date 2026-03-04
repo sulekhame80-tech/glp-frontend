@@ -10,7 +10,7 @@ class Defaultregister extends Component {
         return (
             <Fragment>
                 <MetaTags>
-                    <title>Weedoboard React | Default Register</title>
+                    <title>Genelifeplus | Default Register</title>
                     <meta
                         name="description"
                         content="#"

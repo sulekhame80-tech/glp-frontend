@@ -10,7 +10,7 @@ class Alerts extends Component {
         return (
             <Fragment>
                 <MetaTags>
-                    <title>Weedoboard React | Alerts</title>
+                    <title>Genelifeplus | Alerts</title>
                     <meta
                         name="description"
                         content="#"

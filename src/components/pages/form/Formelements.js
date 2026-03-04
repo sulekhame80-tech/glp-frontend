@@ -10,7 +10,7 @@ class Formelements extends Component {
         return (
             <Fragment>
                 <MetaTags>
-                    <title>Weedoboard React | Form Elements</title>
+                    <title>Genelifeplus | Form Elements</title>
                     <meta
                         name="description"
                         content="#"

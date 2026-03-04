@@ -10,7 +10,7 @@ class Modallogin extends Component {
         return (
             <Fragment>
                 <MetaTags>
-                    <title>Weedoboard React | Modal Login</title>
+                    <title>Genelifeplus | Modal Login</title>
                     <meta
                         name="description"
                         content="#"

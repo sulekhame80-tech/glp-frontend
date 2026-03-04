@@ -10,7 +10,7 @@ class Datatables extends Component {
         return (
             <Fragment>
                 <MetaTags>
-                    <title>Weedoboard React | Data Tables</title>
+                    <title>Genelifeplus | Data Tables</title>
                     <meta
                         name="description"
                         content="#"

@@ -10,7 +10,7 @@ class Tabs extends Component {
         return (
             <Fragment>
                 <MetaTags>
-                    <title>Weedoboard React | Tabs</title>
+                    <title>Genelifeplus | Tabs</title>
                     <meta
                         name="description"
                         content="#"

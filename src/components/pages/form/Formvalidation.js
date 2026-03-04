@@ -10,7 +10,7 @@ class Formvalidation extends Component {
         return (
             <Fragment>
                 <MetaTags>
-                    <title>Weedoboard React | Form Validation</title>
+                    <title>Genelifeplus | Form Validation</title>
                     <meta
                         name="description"
                         content="#"

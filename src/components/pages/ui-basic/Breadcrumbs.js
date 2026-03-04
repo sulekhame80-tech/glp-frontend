@@ -10,7 +10,7 @@ class Breadcrumbs extends Component {
         return (
             <Fragment>
                 <MetaTags>
-                    <title>Weedoboard React | Breadcrumbs</title>
+                    <title>Genelifeplus | Breadcrumbs</title>
                     <meta
                         name="description"
                         content="#"

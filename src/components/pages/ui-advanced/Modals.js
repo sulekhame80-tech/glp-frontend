@@ -10,7 +10,7 @@ class Modals extends Component {
         return (
             <Fragment>
                 <MetaTags>
-                    <title>Weedoboard React | Modals</title>
+                    <title>Genelifeplus | Modals</title>
                     <meta
                         name="description"
                         content="#"

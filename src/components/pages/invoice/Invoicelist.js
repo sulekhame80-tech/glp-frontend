@@ -10,7 +10,7 @@ class Invoicelist extends Component {
         return (
             <Fragment>
                 <MetaTags>
-                    <title>Weedoboard React | Invoice List</title>
+                    <title>Genelifeplus | Invoice List</title>
                     <meta
                         name="description"
                         content="#"

@@ -10,7 +10,7 @@ class Projectmanagement extends Component {
         return (
             <Fragment>
                 <MetaTags>
-                    <title>Weedoboard React | Project Management</title>
+                    <title>Genelifeplus | Project Management</title>
                     <meta
                         name="description"
                         content="#"

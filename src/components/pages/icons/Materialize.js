@@ -10,7 +10,7 @@ class Materialize extends Component {
         return (
             <Fragment>
                 <MetaTags>
-                    <title>Weedoboard React | Materialize Icons</title>
+                    <title>Genelifeplus | Materialize Icons</title>
                     <meta
                         name="description"
                         content="#"

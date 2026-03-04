@@ -10,7 +10,7 @@ class Modalregister extends Component {
         return (
             <Fragment>
                 <MetaTags>
-                    <title>Weedoboard React | Modal Register</title>
+                    <title>Genelifeplus | Modal Register</title>
                     <meta
                         name="description"
                         content="#"

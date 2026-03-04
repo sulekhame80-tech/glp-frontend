@@ -7,7 +7,7 @@ class Error extends Component {
         return (
             <Fragment>
                 <MetaTags>
-                    <title>Weedoboard React | Error</title>
+                    <title>Genelifeplus | Error</title>
                     <meta
                         name="description"
                         content="#"
