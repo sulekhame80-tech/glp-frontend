@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
-import { FiDownload, FiUpload, FiPrinter } from "react-icons/fi";
+import { FiDownload, FiUpload, FiPrinter, FiSearch } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import { getLabrecordApi, downloadGmailExcelApi, deleteLabrecordApi, getUserLocationApi } from "../../../api/endpoint";
 import './order.css';
@@ -19,6 +19,7 @@ function OrderStatus() {
   const [totalRows, setTotalRows] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedOrderId, setSelectedOrderId] = useState(null); // <-- selected order
+  const [loading, setLoading] = useState(false);
 
   const handleUpdate = (row) => {
     setSelectedOrderId(row.order_id); // <-- pass order_id to form
@@ -153,6 +154,7 @@ function OrderStatus() {
 
 
   const fetchOrders = async (page = 1, search = "") => {
+    setLoading(true);
     try {
       const response = await getLabrecordApi(page, 10, search);
       let data = response.data.data || [];
@@ -170,6 +172,8 @@ function OrderStatus() {
       setTotalRows(data.length); // update count after filtering
     } catch (error) {
       console.error("Error fetching orders:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -415,6 +419,13 @@ function OrderStatus() {
               overflowX="auto"
               fixedHeader
               fixedHeaderScrollHeight="500px"
+              progressPending={loading}
+              progressComponent={
+                <div style={{ padding: '24px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}>
+                  <FiSearch size={40} className="ms-text-primary" style={{ animation: 'bounce 1s infinite' }} />
+                  <span style={{ fontSize: '16px', fontWeight: '500', color: '#3366cc' }}>Searching for orders...</span>
+                </div>
+              }
               direction="ltr"
               customStyles={{
                 table: {

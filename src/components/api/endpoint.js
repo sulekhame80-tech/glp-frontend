@@ -2,7 +2,8 @@ import axios from "axios";
 // const API_URL = "http://localhost:8000";
 // const API_URL = "https://glp-backend-production.up.railway.app";
 // const API_URL = "https://genelifeplus.co.in";
-const API_URL = "https://glp-backend.onrender.com";
+const API_URL = "http://localhost:8000";
+// const API_URL = "https://glp-backend.onrender.com";
 /**
  * Register User API
  * @param {Object} user - user registration details
