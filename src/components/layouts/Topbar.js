@@ -137,7 +137,7 @@ function Topbar() {
         </div>
 
         <div className="ml-2">
-          <Link className="p-0" to="/" title="Go to GENELIFE Plus Home">
+          <Link className="p-0" to="/landing" title="Go to GENELIFE Plus Home">
             <img
               src={process.env.PUBLIC_URL + "/logo.png"}
               alt="GENELIFE Plus Home"
