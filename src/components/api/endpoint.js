@@ -88,7 +88,7 @@ export function getusernamebyUserApi(user_name) {
 
 
 export const deleteUserApi = async (userId) => {
-  return await axios.delete(`${BASE_URL}/api/user/delete/${userId}/`);
+  return await axios.delete(`${API_URL}/api/user/delete/${userId}/`);
 };
 
 export function createHospitalApi(data) {

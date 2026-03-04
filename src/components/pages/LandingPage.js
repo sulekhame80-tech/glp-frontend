@@ -394,6 +394,10 @@ This inquiry was sent from the GeneLife Plus by ${formData.name}.
                             <span>UDYAM: TN-11-0043691</span>
                             <span>GST IN: 33FRGPS4137A1Z0</span>
                             <span>© {new Date().getFullYear()} GENELIFE Plus. All rights reserved.</span>
+                            <div className="glp-footer-powered" style={{ marginTop: '10px', display: 'flex', alignItems: 'center', opacity: '0.8' }}>
+                                <span style={{ fontSize: '12px', marginRight: '10px' }}>Powered by</span>
+                                <img src={process.env.PUBLIC_URL + '/cc.png'} alt="Campus Connection" style={{ height: '30px', width: 'auto' }} />
+                            </div>
                         </div>
                         <div className="glp-footer-contact">
                             <a href="mailto:genelifeplus@gmail.com">genelifeplus@gmail.com</a>

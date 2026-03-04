@@ -79,6 +79,43 @@ function App() {
     return <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>Loading...</div>;
   }
 
+  // Security: Prevent Inspect Code
+  useEffect(() => {
+    const handleContextMenu = (e) => e.preventDefault();
+    const handleKeyDown = (e) => {
+      // Disable F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U
+      if (
+        e.keyCode === 123 ||
+        (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74)) ||
+        (e.ctrlKey && e.keyCode === 85)
+      ) {
+        e.preventDefault();
+      }
+    };
+
+    document.addEventListener("contextmenu", handleContextMenu);
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("contextmenu", handleContextMenu);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
+
+  // Security: Logout on Refresh or Manual URL change
+  useEffect(() => {
+    // This effect runs on mount (refresh)
+    const isRefreshed = window.performance && window.performance.navigation.type === 1;
+
+    if (isAuthenticated && isRefreshed) {
+      console.log("🔄 Page refreshed - Logging out...");
+      // Clear session and redirect
+      localStorage.clear();
+      sessionStorage.clear();
+      window.location.href = "/";
+    }
+  }, [isAuthenticated]);
+
   // Smart Redirect: If authenticated and on public pages, redirect to dashboard
   if (isAuthenticated && (location.pathname === '/' || location.pathname === '/login')) {
     return <Navigate to="/dashboard/web-analytics" replace />;

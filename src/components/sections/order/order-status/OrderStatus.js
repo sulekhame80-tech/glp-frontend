@@ -402,7 +402,6 @@ function OrderStatus() {
                 navigate(`/invoice/invoice`);
               }}
             >
-
               Go to Invoice
             </button>
 

@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import DataTable from "react-data-table-component";
 import { Link } from "react-router-dom";
 import { getAllHospitalsApi, importHospitalApi, deleteHospitalApi } from "../../api/endpoint";
-import { FiEdit, FiTrash2 } from "react-icons/fi";
+import { FiEdit, FiTrash2, FiSearch } from "react-icons/fi";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 import { UserContext } from "../../../UserContext";
@@ -71,11 +71,22 @@ const Latestproducts = () => {
       name: "Logo",
       selector: (row) => row.image,
       cell: (row) => (
-        <img
-          src={row.image ? `data:image/jpeg;base64,${row.image}` : "/no-image.jpg"}
-          alt="hospital"
-          style={{ width: 50, height: 50, borderRadius: 5 }}
-        />
+        row.image ? (
+          <img
+            src={`data:image/jpeg;base64,${row.image}`}
+            alt="hospital"
+            style={{ width: 50, height: 50, borderRadius: 5 }}
+          />
+        ) : (
+          <div style={{ width: 50, height: 50, borderRadius: 5, background: '#f8f9fa', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid #dee2e6' }}>
+            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#3366cc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 21h18" />
+              <path d="M5 21V7a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v14" />
+              <path d="M9 12h6" />
+              <path d="M12 9v6" />
+            </svg>
+          </div>
+        )
       ),
       width: "80px",
     },
@@ -280,6 +291,12 @@ const Latestproducts = () => {
             columns={columns}
             data={hospitals}
             progressPending={loading}
+            progressComponent={
+              <div style={{ padding: '24px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}>
+                <FiSearch size={40} className="ms-text-primary" style={{ animation: 'bounce 1s infinite' }} />
+                <span style={{ fontSize: '16px', fontWeight: '500', color: '#3366cc' }}>Searching for hospitals...</span>
+              </div>
+            }
             pagination
             paginationServer
             paginationTotalRows={totalRows}

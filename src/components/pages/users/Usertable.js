@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { getAllUsersApi, updateUserApi, deleteUserApi, locationDropdownApi } from "../../api/endpoint";
 import DataTable from "react-data-table-component";
-import { FiEdit, FiTrash2 } from "react-icons/fi";
+import { FiEdit, FiTrash2, FiSearch } from "react-icons/fi";
 import "./UserTable.css";
 import Breadcrumb from "../../layouts/Breadcrumb";
 import { useContext } from "react";
@@ -12,7 +12,7 @@ function UserTable({ onEdit }) {
   const [page, setPage] = useState(1);
   const [totalRows, setTotalRows] = useState(0);
   const [loading, setLoading] = useState(false);
-const { role: loggedInRole } = useContext(UserContext);
+  const { role: loggedInRole } = useContext(UserContext);
   const [editUser, setEditUser] = useState(null); // Show form
   const [locations, setLocations] = useState([]); // Dropdown locations
   const [formData, setFormData] = useState({
@@ -189,22 +189,22 @@ const { role: loggedInRole } = useContext(UserContext);
 
                   {/* LOCATION DROPDOWN */}
                   <div className="col-md-4 mb-3">
-  <label>Location *</label>
-  <select
-    name="location_id"
-    className="form-control"
-    value={formData.location_id || ""}
-    onChange={handleChange}
-    required
-  >
-    <option value="">Select Location</option>
-    {locations.map((loc) => (
-      <option key={loc.id} value={loc.id}>
-        {loc.location}
-      </option>
-    ))}
-  </select>
-</div>
+                    <label>Location *</label>
+                    <select
+                      name="location_id"
+                      className="form-control"
+                      value={formData.location_id || ""}
+                      onChange={handleChange}
+                      required
+                    >
+                      <option value="">Select Location</option>
+                      {locations.map((loc) => (
+                        <option key={loc.id} value={loc.id}>
+                          {loc.location}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
 
 
                   <div className="col-md-4 mb-3">
@@ -261,12 +261,18 @@ const { role: loggedInRole } = useContext(UserContext);
         <DataTable
           columns={columns}
           data={
-  loggedInRole === "Super Admin"
-    ? users
-    : users.filter((u) => u.role !== "Super Admin")
-}
-         // data={users}
+            loggedInRole === "Super Admin"
+              ? users
+              : users.filter((u) => u.role !== "Super Admin")
+          }
+          // data={users}
           progressPending={loading}
+          progressComponent={
+            <div style={{ padding: '24px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}>
+              <FiSearch size={40} className="ms-text-primary" style={{ animation: 'bounce 1s infinite' }} />
+              <span style={{ fontSize: '16px', fontWeight: '500', color: '#3366cc' }}>Searching for users...</span>
+            </div>
+          }
           pagination
           paginationServer
           paginationTotalRows={totalRows}

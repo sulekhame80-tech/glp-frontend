@@ -109,7 +109,7 @@ function Topbar() {
   }, []);
 
   // Logout Handler
-  const logoutUser = async () => {
+  const logoutUser = async (targetPath = "/login") => {
     try {
       if (userName) {
         await LogoutApi(userName); // call API
@@ -121,8 +121,8 @@ function Topbar() {
       localStorage.clear();
       sessionStorage.clear();
 
-      // Redirect to Genelife website
-      window.location.href = "https://genelifeplus.co.in";
+      // Redirect to specified path
+      window.location.href = targetPath;
     }
   };
 
@@ -137,14 +137,18 @@ function Topbar() {
         </div>
 
         <div className="ml-2">
-          <Link className="p-0" to="/landing" title="Go to GENELIFE Plus Home">
+          <div
+            onClick={() => logoutUser("/")}
+            title="Logo Logout & Go to Home"
+            style={{ cursor: "pointer" }}
+          >
             <img
               src={process.env.PUBLIC_URL + "/logo.png"}
               alt="GENELIFE Plus Home"
               className="ms-logo-glow"
-              style={{ maxHeight: "60px", width: "auto", objectFit: "contain", cursor: "pointer" }}
+              style={{ maxHeight: "60px", width: "auto", objectFit: "contain" }}
             />
-          </Link>
+          </div>
         </div>
       </div>
 
@@ -352,7 +356,7 @@ function Topbar() {
             <li className="dropdown-divider" />
 
             <li className="dropdown-menu-footer">
-              <div className="media fs-14 p-2" onClick={logoutUser} style={{ cursor: "pointer" }}>
+              <div className="media fs-14 p-2" onClick={() => logoutUser("/login")} style={{ cursor: "pointer" }}>
                 <span>
                   <i className="flaticon-shut-down mr-2" /> Logout
                 </span>

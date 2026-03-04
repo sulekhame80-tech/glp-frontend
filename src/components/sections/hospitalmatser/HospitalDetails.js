@@ -1,6 +1,6 @@
 import React, { useEffect, useState, Fragment } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { getHospitalApi, updateHospitalApi,locationDropdownApi } from "../../api/endpoint";
+import { getHospitalApi, updateHospitalApi, locationDropdownApi } from "../../api/endpoint";
 import { Form, Col, InputGroup, Button } from "react-bootstrap";
 
 const HospitalDetail = () => {
@@ -22,19 +22,19 @@ const HospitalDetail = () => {
     gst: "",
     image: null,
   });
-const [locations, setLocations] = useState([]);
-useEffect(() => {
-  fetchLocations();
-}, []);
+  const [locations, setLocations] = useState([]);
+  useEffect(() => {
+    fetchLocations();
+  }, []);
 
-const fetchLocations = async () => {
-  try {
-    const res = await locationDropdownApi();
-    setLocations(res.data || []);
-  } catch (err) {
-    console.error("Failed to fetch locations:", err);
-  }
-};
+  const fetchLocations = async () => {
+    try {
+      const res = await locationDropdownApi();
+      setLocations(res.data || []);
+    } catch (err) {
+      console.error("Failed to fetch locations:", err);
+    }
+  };
 
   const [validated, setValidated] = useState(false);
 
@@ -89,6 +89,9 @@ const fetchLocations = async () => {
       if (key === "image") {
         if (hospital.image instanceof File) {
           formData.append(key, hospital.image);
+          console.log("Adding NEW image file to FormData");
+        } else {
+          console.log("Skipping existing image string/null for Update");
         }
       } else {
         formData.append(key, hospital[key] || "");
@@ -105,7 +108,7 @@ const fetchLocations = async () => {
     }
   };
 
- 
+
 
   return (
     <Fragment>
@@ -198,29 +201,29 @@ const fetchLocations = async () => {
                 </Form.Group>
 
                 {/* Location (Dropdown or Text Input) */}
-               <Form.Group as={Col} md="4" controlId="location">
-  <Form.Label>Location</Form.Label>
+                <Form.Group as={Col} md="4" controlId="location">
+                  <Form.Label>Location</Form.Label>
 
-  <Form.Control
-    as="select"
-    name="location"
-    value={hospital.location || ""}
-    onChange={handleChange}
-    required
-  >
-    <option value="">Select Location</option>
+                  <Form.Control
+                    as="select"
+                    name="location"
+                    value={hospital.location || ""}
+                    onChange={handleChange}
+                    required
+                  >
+                    <option value="">Select Location</option>
 
-    {locations.map((loc) => (
-      <option key={loc.id} value={loc.location}>
-        {loc.location}
-      </option>
-    ))}
-  </Form.Control>
+                    {locations.map((loc) => (
+                      <option key={loc.id} value={loc.location}>
+                        {loc.location}
+                      </option>
+                    ))}
+                  </Form.Control>
 
-  <Form.Control.Feedback type="invalid">
-    Please select a location
-  </Form.Control.Feedback>
-</Form.Group>
+                  <Form.Control.Feedback type="invalid">
+                    Please select a location
+                  </Form.Control.Feedback>
+                </Form.Group>
 
                 {/* Bank Name */}
                 <Form.Group as={Col} md="4">
@@ -297,26 +300,38 @@ const fetchLocations = async () => {
                   />
                 </Form.Group>
 
-                {/* Upload Image (Full) */}
                 <Form.Group as={Col} md="12">
-                  <Form.Label>Upload Hospital Logo</Form.Label>
-                  <InputGroup>
-                    <Form.File name="image" label="Choose file..." custom onChange={handleChange} />
-                    {hospital.image && !(hospital.image instanceof File) && (
-                      <img
-                        src={`data:image/png;base64,${hospital.image}`}
-                        alt="Hospital Logo"
-                        style={{ width: "100px", marginBottom: "10px" }}
-                      />
+                  <Form.Label>Hospital Logo</Form.Label>
+                  <div style={{ marginBottom: '15px', display: 'flex', alignItems: 'center', gap: '20px' }}>
+                    {hospital.image ? (
+                      hospital.image instanceof File ? (
+                        <img
+                          src={URL.createObjectURL(hospital.image)}
+                          alt="Hospital Logo (new)"
+                          style={{ width: "100px", height: "100px", objectFit: "cover", borderRadius: "8px", border: "1px solid #dee2e6" }}
+                        />
+                      ) : (
+                        <img
+                          src={`data:image/png;base64,${hospital.image}`}
+                          alt="Hospital Logo"
+                          style={{ width: "100px", height: "100px", objectFit: "cover", borderRadius: "8px", border: "1px solid #dee2e6" }}
+                        />
+                      )
+                    ) : (
+                      <div style={{ width: "100px", height: "100px", borderRadius: "8px", background: '#f8f9fa', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '2px dashed #3366cc' }}>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="#3366cc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M3 21h18" />
+                          <path d="M5 21V7a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v14" />
+                          <path d="M9 12h6" />
+                          <path d="M12 9v6" />
+                        </svg>
+                      </div>
                     )}
-                    {hospital.image instanceof File && (
-                      <img
-                        src={URL.createObjectURL(hospital.image)}
-                        alt="Hospital Logo (new)"
-                        style={{ width: "100px", marginBottom: "10px" }}
-                      />
-                    )}
-                  </InputGroup>
+                    <div style={{ flex: 1 }}>
+                      <Form.File name="image" label="Change Logo" custom onChange={handleChange} />
+                      <small className="text-muted mt-2 d-block">Recommended: Square image, max 2MB</small>
+                    </div>
+                  </div>
                 </Form.Group>
 
                 {/* Buttons (Right Align Full Row) */}
