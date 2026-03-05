@@ -2,8 +2,8 @@ import axios from "axios";
 // const API_URL = "http://localhost:8000";
 // const API_URL = "https://glp-backend-production.up.railway.app";
 // const API_URL = "https://genelifeplus.co.in";
-//const API_URL = "http://localhost:8000";
-const API_URL = "https://glp-backend.onrender.com";
+const API_URL = "http://localhost:8000";
+// const API_URL = "https://glp-backend.onrender.com";
 /**
  * Register User API
  * @param {Object} user - user registration details
@@ -153,6 +153,8 @@ export function deleteOrderApi(id) {
 export function getOrderByIdApi(id) {
   return axios.get(`${API_URL}/api/orders/${id}/`);
 }
+export const gmailAuthUrl = `${API_URL}/gmail-auth/`;
+
 export const downloadGmailExcelApi = async () => {
   console.log("📌 downloadGmailExcelApi called"); // log when API is called
   try {
@@ -163,6 +165,11 @@ export const downloadGmailExcelApi = async () => {
     console.error("❌ Gmail API error:", error);
     throw error;
   }
+};
+
+export const saveGmailOrderApi = async (data) => {
+  console.log("📌 saveGmailOrderApi called", data);
+  return await axios.post(`${API_URL}/api/save-gmail-order/`, data);
 };
 
 export function updateGpsLocationApi(data) {

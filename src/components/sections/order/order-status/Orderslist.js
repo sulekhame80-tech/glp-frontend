@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import { FiDownload, FiUpload, FiPrinter } from "react-icons/fi"; // Feather icons
 import { columns } from "../../../data/orderlist";
-import { getAllordersApi, addOrderApi, getOrderByIdApi, downloadGmailExcelApi, updateOrderApi, deleteOrderApi } from "../../../api/endpoint";
+import { getAllordersApi, addOrderApi, getOrderByIdApi, downloadGmailExcelApi, saveGmailOrderApi, updateOrderApi, deleteOrderApi } from "../../../api/endpoint";
 import './order.css';
 import ExcelJS from "exceljs";
 import { saveAs } from "file-saver";
-import { FiPlus } from "react-icons/fi";
+import { FiPlus, FiSearch } from "react-icons/fi";
 import { getTestDropdownApi, getclinicianApi } from "../../../api/endpoint";
 
 function Orderslist() {
@@ -17,6 +17,9 @@ function Orderslist() {
   const [currentPage, setCurrentPage] = useState(1);
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [gmailOrders, setGmailOrders] = useState([]);
+  const [showGmailPopup, setShowGmailPopup] = useState(false);
 
   useEffect(() => {
     const delayDebounce = setTimeout(() => {
@@ -87,6 +90,7 @@ function Orderslist() {
 
 
   const fetchOrders = async (page = 1, search = "") => {
+    setLoading(true);
     try {
       const response = await getAllordersApi(page, search);
 
@@ -100,6 +104,8 @@ function Orderslist() {
       setTotalRows(response.data.count);
     } catch (error) {
       console.error("Error fetching orders:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -109,15 +115,35 @@ function Orderslist() {
 
   const handleFetchFromGmail = async () => {
     setIsSyncing(true);
+    setLoading(true);
     try {
-      await downloadGmailExcelApi();
+      console.log("🚀 Starting Gmail Sync...");
+      const response = await downloadGmailExcelApi();
+      console.log("✅ Gmail Sync Success:", response.data);
+      setGmailOrders(response.data.orders || []);
+      setShowGmailPopup(true);
       fetchOrders(currentPage, searchText);
-      alert("✔ Gmail data uploaded successfully!");
     } catch (error) {
       console.error("Error syncing Gmail data:", error);
-      alert("Failed to sync Gmail data.");
+      alert("Failed to sync Gmail data. Please check backend console for authentication or errors.");
     } finally {
       setIsSyncing(false);
+      setLoading(false);
+    }
+  };
+
+  const handleSaveGmailOrder = async (order) => {
+    try {
+      setLoading(true);
+      await saveGmailOrderApi(order);
+      alert(`Order ${order.order_id} saved successfully!`);
+      setGmailOrders(prev => prev.filter(o => o.order_id !== order.order_id));
+      fetchOrders(currentPage, searchText);
+    } catch (error) {
+      console.error("❌ Save Gmail Order Error:", error);
+      alert("Failed to save order.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -333,6 +359,80 @@ function Orderslist() {
 
   return (
     <div className="col-md-12">
+      {/* Gmail Verification Popup */}
+      {showGmailPopup && (
+        <div className="modal-backdrop">
+          <div className="modal-box">
+            <div className="modal-header-themed">
+              <h6 className="mb-0">Gmail Orders Verification</h6>
+              <button
+                type="button"
+                className="close text-white"
+                onClick={() => setShowGmailPopup(false)}
+                style={{ background: 'none', border: 'none', fontSize: '1.5rem', lineHeight: 1 }}
+              >
+                <span>&times;</span>
+              </button>
+            </div>
+            <div className="modal-body-themed">
+              <div className="d-flex justify-content-between align-items-center mb-3">
+                <p className="text-muted mb-0">Review and select orders to add to the database.</p>
+                <span className="badge badge-primary">{gmailOrders.length} Orders Found</span>
+              </div>
+
+              <div className="table-responsive">
+                <table className="table table-hover table-striped border">
+                  <thead className="thead-light">
+                    <tr>
+                      <th>Sample ID</th>
+                      <th>Patient Name</th>
+                      <th>Clinician</th>
+                      <th>Test Name</th>
+                      <th>Booking Date</th>
+                      <th className="text-center">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {gmailOrders.length > 0 ? (
+                      gmailOrders.map((order, idx) => (
+                        <tr key={idx}>
+                          <td className="font-weight-bold text-primary">{order.sample_id}</td>
+                          <td>{order.patient_name}</td>
+                          <td>{order.clinician_name}</td>
+                          <td>
+                            <div className="text-truncate" style={{ maxWidth: '200px' }} title={order.test_name}>
+                              {order.test_name}
+                            </div>
+                          </td>
+                          <td>{order.order_booking_date}</td>
+                          <td className="text-center">
+                            <button
+                              className="btn btn-sm btn-success px-3"
+                              onClick={() => handleSaveGmailOrder(order)}
+                            >
+                              Add
+                            </button>
+                          </td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan="6" className="text-center py-4 text-muted">No orders found in recent emails.</td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div className="modal-footer-themed">
+              <button className="btn btn-secondary" onClick={() => setShowGmailPopup(false)}>
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="ms-panel">
         {showForm && (
           <div className="modal-backdrop">
@@ -512,6 +612,13 @@ function Orderslist() {
             <DataTable
               columns={columns}
               data={enhancedOrderData}
+              progressPending={loading}
+              progressComponent={
+                <div style={{ padding: '24px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}>
+                  <FiSearch size={40} className="ms-text-primary" style={{ animation: 'bounce 1s infinite' }} />
+                  <span style={{ fontSize: '16px', fontWeight: '500', color: '#3366cc' }}>Searching for orders...</span>
+                </div>
+              }
               pagination
               responsive
               highlightOnHover
