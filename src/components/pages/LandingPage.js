@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './LandingPage.css';
+import { sendContactEmailApi } from '../api/endpoint';
 
 const LandingPage = () => {
     const [scrolled, setScrolled] = useState(false);
@@ -20,42 +21,20 @@ const LandingPage = () => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleFormSubmit = (e) => {
+    const handleFormSubmit = async (e) => {
         e.preventDefault();
 
-        // Construct professional Gmail body template
-        const adminEmail = 'kasimfaiyas@gmail.com';
-        const subject = encodeURIComponent(`GENELIFE PLUS: New Inquiry from ${formData.name}`);
-
-        const timestamp = new Date().toLocaleString();
-        const mailBody =
-            `--------------------------------------------------
-  GENELIFE PLUS - NEW INQUIRY FORM
---------------------------------------------------
-
-PATIENT / CUSTOMER DETAILS:
----------------------------
-• Name:    ${formData.name}
-• Phone:   ${formData.phone}
-• Email:   ${formData.email || 'Not Provided'}
-• Time:    ${timestamp}
-
-REQUEST DETAILS:
-----------------
-${formData.message}
-
---------------------------------------------------
-This inquiry was sent from the GeneLife Plus by ${formData.name}.
---------------------------------------------------`;
-
-        const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${adminEmail}&su=${subject}&body=${encodeURIComponent(mailBody)}`;
-
-        // Open Gmail in a new tab
-        window.open(gmailUrl, '_blank');
-
-        setSubmitted(true);
-        setTimeout(() => setSubmitted(false), 3000);
-        setFormData({ name: '', phone: '', email: '', message: '' });
+        try {
+            const response = await sendContactEmailApi(formData);
+            if (response.status === 200) {
+                setSubmitted(true);
+                setTimeout(() => setSubmitted(false), 3000);
+                setFormData({ name: '', phone: '', email: '', message: '' });
+            }
+        } catch (error) {
+            console.error("Error sending contact email:", error);
+            alert("Failed to send message. Please try again later.");
+        }
     };
 
     const scrollToSection = (id) => {
