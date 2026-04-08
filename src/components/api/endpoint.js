@@ -740,3 +740,6 @@ export function getEmployeeMonthlyOrdersApi({ username, month }) {
     },
   });
 }
+export function sendContactEmailApi(data) {
+  return axios.post(`${API_URL}/api/contact/`, data);
+}
