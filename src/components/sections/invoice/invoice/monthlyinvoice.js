@@ -239,240 +239,279 @@ async function imageToBuffer(src) {
 }
 
 const handleDownloadPdf = async () => {
-  try {
-    if (selectedRecords.length === 0) { alert("Select records first"); return; }
+    try {
+      if (selectedRecords.length === 0) { alert("Select records first"); return; }
 
-    const defaultDetails = DEFAULT_COMPANY_DETAILS;
+      const defaultDetails = DEFAULT_COMPANY_DETAILS;
+      
+      // Calculate totals
+      const subtotal = selectedRecords.reduce((sum, r) => sum + (r.test_price || r.price || 0), 0);
+      const sgstAmount = (subtotal * (invoiceMeta.sgst || 0)) / 100;
+      const cgstAmount = (subtotal * (invoiceMeta.cgst || 0)) / 100;
+      const totalAmount = subtotal + sgstAmount + cgstAmount;
+
+      const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const pageHeight = pdf.internal.pageSize.getHeight();
+      const margin = 14;
+      let yPosition = margin;
+
+      // Load images
+      const logoImg = await loadImage(logo);
+      const qrImg = await loadImage(qrCode);
+
+      // ===== HEADER SECTION (Synchronized with Preview) =====
+      // Logo and Left Header
+      const logoWidth = 35;
+      const logoHeight = 22;
+      pdf.addImage(logoImg, "JPEG", margin, yPosition, logoWidth, logoHeight);
+      yPosition += logoHeight + 4;
+
+      // Company Name
+      pdf.setFontSize(22);
+      pdf.setTextColor(40, 140, 76); // #288C4C
+      pdf.setFont(undefined, "bold");
+      pdf.text("GENELIFE PLUS", margin, yPosition);
+      
+      // Right Side Branding: MEDGENOME
+      pdf.setFontSize(18);
+      pdf.setTextColor(66, 183, 213); // #42B7D5
+      pdf.text("MEDGENOME", pageWidth - margin, margin + 5, { align: "right" });
+
+      yPosition += 6;
+      pdf.setFontSize(8);
+      pdf.setTextColor(0, 0, 0);
+      pdf.setFont(undefined, "bold");
+      pdf.text("(AUTHORISED COLLECTION CENTRE FOR MEDGENOME LABS LTD.)", margin, yPosition);
+      yPosition += 4;
+      pdf.setFont(undefined, "normal");
+      pdf.text(`Phone no. : ${defaultDetails.phone}`, margin, yPosition);
+      yPosition += 4;
+      pdf.text(`Email: ${defaultDetails.email}`, margin, yPosition);
+      yPosition += 4;
+      pdf.text(`GSTIN: ${defaultDetails.gstin}`, margin, yPosition);
+      yPosition += 6;
+
+      // Header Separator Line
+      pdf.setDrawColor(150, 120, 180); // #9678B4
+      pdf.setLineWidth(0.5);
+      pdf.line(margin, yPosition, pageWidth - margin, yPosition);
+      yPosition += 8;
+
+      // ===== TITLE =====
+      pdf.setFontSize(18);
+      pdf.setTextColor(0, 191, 255); // #00BFFF
+      pdf.setFont(undefined, "bold");
+      pdf.text("PROFORMA INVOICE", pageWidth / 2, yPosition, { align: "center" });
+      yPosition += 10;
+
+      // ===== BILL TO & INVOICE DETAILS (Synchronized with Preview) =====
+      const colGap = 5;
+      const colWidth = (pageWidth - 2 * margin - colGap) / 2;
+      const boxHeight = 28;
+      const headerHeight = 7;
+
+      // Left Box: Bill To
+      // Box Header
+      pdf.setFillColor(160, 120, 180); // #A078B4
+      pdf.rect(margin, yPosition, colWidth, headerHeight, "F");
+      pdf.setTextColor(255, 255, 255);
+      pdf.setFontSize(9);
+      pdf.text("Bill To -", margin + 3, yPosition + 4.5);
+      
+      // Box Border
+      pdf.setDrawColor(221, 221, 221);
+      pdf.rect(margin, yPosition, colWidth, boxHeight);
+      
+      // Box Content
+      pdf.setTextColor(0, 0, 0);
+      pdf.setFont(undefined, "bold");
+      pdf.setFontSize(9);
+      pdf.text("GENELIFE PLUS", margin + 3, yPosition + headerHeight + 5);
+      pdf.setFont(undefined, "normal");
+      pdf.setFontSize(8);
+      const addressLines = pdf.splitTextToSize(defaultDetails.address, colWidth - 6);
+      pdf.text(addressLines, margin + 3, yPosition + headerHeight + 9);
+      pdf.text(`GSTIN: ${defaultDetails.gstin}`, margin + 3, yPosition + headerHeight + 17);
+
+      // Right Box: Invoice Details
+      const rightColX = margin + colWidth + colGap;
+      // Box Header
+      pdf.setFillColor(160, 120, 180); // #A078B4
+      pdf.rect(rightColX, yPosition, colWidth, headerHeight, "F");
+      pdf.setTextColor(255, 255, 255);
+      pdf.setFontSize(9);
+      pdf.text("Invoice Details -", rightColX + 3, yPosition + 4.5);
+      
+      // Box Border
+      pdf.rect(rightColX, yPosition, colWidth, boxHeight);
+      
+      // Box Content
+      pdf.setTextColor(0, 0, 0);
+      pdf.setFont(undefined, "normal");
+      pdf.setFontSize(8);
+      pdf.setFont(undefined, "bold");
+      pdf.text("Invoice No:", rightColX + 3, yPosition + headerHeight + 5);
+      pdf.setFont(undefined, "normal");
+      pdf.text(`${invoiceMeta.invoice_no || "GLP-2025-..."}`, rightColX + 25, yPosition + headerHeight + 5);
+      
+      pdf.setFont(undefined, "bold");
+      pdf.text("Date:", rightColX + 3, yPosition + headerHeight + 10);
+      pdf.setFont(undefined, "normal");
+      pdf.text(`${new Date().toLocaleDateString('en-IN')}`, rightColX + 25, yPosition + headerHeight + 10);
+
+      yPosition += boxHeight + 8;
+
+      // ===== RECORDS TABLE =====
+      const tableData = selectedRecords.map((r, idx) => {
+        const testNames = Array.isArray(r.test_name) ? r.test_name.join(", ") : r.test_name;
+        return [
+          (idx + 1).toString(),
+          r.date ? new Date(r.date).toLocaleDateString('en-IN') : "",
+          r.patient_name || r.patient || "",
+          testNames,
+          `Rs.${r.test_price?.toFixed(2) || "0.00"}`
+        ];
+      });
+
+      autoTable(pdf, {
+        startY: yPosition,
+        head: [["#", "Date", "Patient Name", "Test Name(s)", "Amount"]],
+        body: tableData,
+        margin: { left: margin, right: margin },
+        theme: "grid",
+        headerStyles: { fillColor: [0, 191, 255], textColor: [255, 255, 255], fontStyle: "bold", fontSize: 9 },
+        bodyStyles: { fontSize: 8 },
+        alternateRowStyles: { fillColor: [245, 245, 245] },
+        columnStyles: {
+          0: { cellWidth: 10, halign: "center" },
+          1: { cellWidth: 25, halign: "center" },
+          2: { cellWidth: 40 },
+          3: { cellWidth: 82 },
+          4: { cellWidth: 25, halign: "right" }
+        }
+      });
+
+      yPosition = pdf.lastAutoTable.finalY + 8;
+
+      // ===== DESCRIPTION =====
+      pdf.setFontSize(9);
+      pdf.setFont(undefined, "bold");
+      pdf.text("Description: - Ref:", margin, yPosition);
+      pdf.setFont(undefined, "normal");
+      pdf.text(invoiceMeta.remarks || "", margin + 30, yPosition);
+      yPosition += 10;
+
+      // ===== TOTALS (Right Aligned) =====
+    const totalsWidth = 70;
+    const totalsX = pageWidth - margin - totalsWidth;
+    const rightPadding = 2; // Padding from the right table border
     
-    // Calculate totals
-    const subtotal = selectedRecords.reduce((sum, r) => sum + (r.test_price || r.price || 0), 0);
-    const sgstAmount = (subtotal * (invoiceMeta.sgst || 0)) / 100;
-    const cgstAmount = (subtotal * (invoiceMeta.cgst || 0)) / 100;
-    const totalAmount = subtotal + sgstAmount + cgstAmount;
+    const drawTotalRow = (label, amount, y, isBold = false) => {
+      pdf.setFont(undefined, isBold ? "bold" : "normal");
+      pdf.text(label, totalsX, y);
+      pdf.text(`Rs. ${amount.toFixed(2)}`, pageWidth - margin - rightPadding, y, { align: "right" });
+      return y + 6;
+    };
 
-    const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
-    const pageWidth = pdf.internal.pageSize.getWidth();
-    const pageHeight = pdf.internal.pageSize.getHeight();
-    const margin = 14;
-    let yPosition = margin;
-
-    // Load images
-    const logoImg = await loadImage(logo);
-    const qrImg = await loadImage(qrCode);
-
-    // ===== HEADER SECTION =====
-    pdf.addImage(logoImg, "JPEG", margin, yPosition, 28, 22);
-    
-    pdf.setFontSize(14);
-    pdf.setTextColor(40, 140, 76);
-    pdf.setFont(undefined, "bold");
-    pdf.text("GENELIFE PLUS", margin + 35, yPosition + 5);
-    
-    pdf.setFontSize(8);
-    pdf.setTextColor(0, 0, 0);
-    pdf.setFont(undefined, "normal");
-    pdf.text("(AUTHORISED COLLECTION CENTRE FOR MEDGENOME LABS LTD.)", margin + 35, yPosition + 10);
-    pdf.text(`Phone: ${defaultDetails.phone} | Email: ${defaultDetails.email}`, margin + 35, yPosition + 14);
-    pdf.text(`GSTIN: ${defaultDetails.gstin}`, margin + 35, yPosition + 18);
-
-    yPosition += 30;
-
-    // Horizontal line
-    pdf.setDrawColor(200);
-    pdf.line(margin, yPosition, pageWidth - margin, yPosition);
-    yPosition += 5;
-
-    // ===== TITLE =====
-    pdf.setFontSize(14);
-    pdf.setTextColor(0, 191, 255);
-    pdf.setFont(undefined, "bold");
-    pdf.text("PROFORMA INVOICE", pageWidth / 2, yPosition, { align: "center" });
-    yPosition += 10;
-
-    // ===== BILL TO & INVOICE DETAILS =====
-    const leftColX = margin;
-    const leftColWidth = 95;
-    const rightColX = leftColX + leftColWidth + 5;
-    const rightColWidth = pageWidth - rightColX - margin;
-
-    // Bill To Box
-    pdf.setFontSize(9);
+      yPosition = drawTotalRow("Sub Total", subtotal, yPosition, true);
+      yPosition = drawTotalRow(`SGST@${invoiceMeta.sgst || 0}%`, sgstAmount, yPosition, true);
+      yPosition = drawTotalRow(`CGST@${invoiceMeta.cgst || 0}%`, cgstAmount, yPosition, true);
+      
+    const totalBoxY = yPosition;
+    pdf.setFillColor(0, 191, 255); // #00BFFF
+    pdf.rect(totalsX - 2, totalBoxY - 4, totalsWidth + 2, 8, "F");
     pdf.setTextColor(255, 255, 255);
-    pdf.setFillColor(160, 120, 180);
+    pdf.setFontSize(10);
     pdf.setFont(undefined, "bold");
-    pdf.rect(leftColX, yPosition, leftColWidth, 28, "F");
-    pdf.text("Bill To -", leftColX + 3, yPosition + 4);
-    pdf.setTextColor(0, 0, 0);
-    pdf.setFont(undefined, "normal");
-    pdf.setFontSize(8);
-    pdf.text(defaultDetails.hospital_name, leftColX + 3, yPosition + 8);
-    pdf.text(defaultDetails.address, leftColX + 3, yPosition + 12);
-    pdf.text(`GSTIN: ${defaultDetails.gstin}`, leftColX + 3, yPosition + 16);
+    pdf.text("TOTAL", totalsX, totalBoxY + 1.5);
+    pdf.text(`Rs. ${totalAmount.toFixed(2)}`, pageWidth - margin - rightPadding, totalBoxY + 1.5, { align: "right" });
+      
+      yPosition += 12;
+      pdf.setTextColor(0, 0, 0);
+      pdf.setFontSize(8);
+      pdf.setFont(undefined, "normal");
+      pdf.text(`Invoice Amount in Words: Rs. ${numberToWords(Math.round(totalAmount))}`, margin, yPosition);
+      yPosition += 10;
 
-    // Invoice Details Box
-    pdf.setFontSize(9);
-    pdf.setTextColor(255, 255, 255);
-    pdf.setFillColor(160, 120, 180);
+      // ===== TERMS & RECEIVED/BALANCE (Synchronized with Preview) =====
+      // Draw a line before footer section
+      pdf.setDrawColor(200);
+      pdf.line(margin, yPosition, pageWidth - margin, yPosition);
+      yPosition += 5;
+
+      const halfWidth = (pageWidth - 2 * margin - 10) / 2;
+      
+      // Terms and Conditions
+      pdf.setFont(undefined, "bold");
+      pdf.setFontSize(9);
+      pdf.text("Terms And Conditions :-", margin, yPosition);
+      pdf.setFont(undefined, "normal");
+      pdf.setFontSize(8);
+      pdf.text("100% payment to be made for order booking", margin, yPosition + 5);
+
+    // Received & Balance
+    const receivedX = margin + halfWidth + 10;
     pdf.setFont(undefined, "bold");
-    pdf.rect(rightColX, yPosition, rightColWidth, 28, "F");
-    pdf.text("Invoice Details -", rightColX + 3, yPosition + 4);
-    pdf.setTextColor(0, 0, 0);
-    pdf.setFont(undefined, "normal");
-    pdf.setFontSize(8);
-    pdf.text(`Invoice No: ${invoiceMeta.invoice_no || ""}`, rightColX + 3, yPosition + 8);
-    pdf.text(`Date: ${new Date().toLocaleDateString('en-IN')}`, rightColX + 3, yPosition + 12);
-
-    yPosition += 35;
-
-    // ===== RECORDS TABLE =====
-    const tableData = selectedRecords.map((r, idx) => {
-      const testNames = Array.isArray(r.test_name) ? r.test_name.join(", ") : r.test_name;
-      return [
-        (idx + 1).toString(),
-        r.date ? new Date(r.date).toLocaleDateString('en-IN') : "",
-        r.patient_name || r.patient || "",
-        testNames,
-        `₹${r.test_price?.toFixed(2) || "0.00"}`
-      ];
-    });
-
-    autoTable(pdf, {
-      startY: yPosition,
-      head: [["#", "Date", "Patient Name", "Test Name(s)", "Amount"]],
-      body: tableData,
-      margin: { left: margin, right: margin },
-      theme: "grid",
-      headerStyles: { fillColor: [0, 191, 255], textColor: [255, 255, 255], fontStyle: "bold", fontSize: 8 },
-      bodyStyles: { fontSize: 8 },
-      alternateRowStyles: { fillColor: [245, 245, 245] },
-      columnStyles: {
-        0: { cellWidth: 10, halign: "center" },
-        1: { cellWidth: 20, halign: "center" },
-        2: { cellWidth: 40 },
-        3: { cellWidth: 60 },
-        4: { cellWidth: 25, halign: "right" }
-      }
-    });
-
-    yPosition = pdf.lastAutoTable.finalY + 10;
-
-    // ===== DESCRIPTION =====
-    pdf.setFontSize(8);
-    pdf.setFont(undefined, "normal");
-    pdf.text(`Description: - Ref: ${invoiceMeta.remarks || ""}`, margin, yPosition);
-    yPosition += 10;
-
-    // ===== TOTALS =====
-    const totalsX = pageWidth - margin - 60;
-    const totalsWidth = 60;
-
-    pdf.setFont(undefined, "normal");
-    pdf.setFontSize(8);
-    pdf.text("Sub Total", totalsX, yPosition);
-    pdf.text(`₹ ${subtotal.toFixed(2)}`, totalsX + totalsWidth - 5, yPosition, { align: "right" });
-    yPosition += 6;
-
-    pdf.text(`SGST@${invoiceMeta.sgst || 0}%`, totalsX, yPosition);
-    pdf.text(`₹ ${sgstAmount.toFixed(2)}`, totalsX + totalsWidth - 5, yPosition, { align: "right" });
-    yPosition += 6;
-
-    pdf.text(`CGST@${invoiceMeta.cgst || 0}%`, totalsX, yPosition);
-    pdf.text(`₹ ${cgstAmount.toFixed(2)}`, totalsX + totalsWidth - 5, yPosition, { align: "right" });
-    yPosition += 8;
-
-    // Total Box
-    pdf.setFillColor(0, 191, 255);
-    pdf.rect(totalsX, yPosition - 4, totalsWidth, 8, "F");
-    pdf.setTextColor(255, 255, 255);
-    pdf.setFont(undefined, "bold");
-    pdf.text("Total", totalsX, yPosition);
-    pdf.text(`₹ ${totalAmount.toFixed(2)}`, totalsX + totalsWidth - 5, yPosition, { align: "right" });
-    yPosition += 12;
-
-    // Amount in words
-    pdf.setTextColor(0, 0, 0);
-    pdf.setFont(undefined, "normal");
-    pdf.setFontSize(7);
-    pdf.text(`Invoice Amount in Words: Rs. ${numberToWords(Math.round(totalAmount))}`, margin, yPosition);
-    yPosition += 8;
-
-    // ===== TERMS & CONDITIONS + RECEIVED & BALANCE =====
-    const termColWidth = (pageWidth - 2 * margin - 15) / 2;
-
-    // Terms box
-    pdf.setFont(undefined, "bold");
-    pdf.setFontSize(8);
-    pdf.text("Terms And Conditions :-", margin, yPosition);
-    pdf.setFont(undefined, "normal");
-    pdf.setFontSize(7);
-    pdf.text("100% payment to be made for order booking", margin, yPosition + 5);
-
-    // Received & Balance box
-    const receivedX = margin + termColWidth + 15;
-    pdf.setFont(undefined, "bold");
-    pdf.setFontSize(8);
     pdf.text("Received", receivedX, yPosition);
-    pdf.text(`₹ ${invoiceMeta.received_amount || 0}`, receivedX + 40, yPosition);
-    pdf.setFont(undefined, "normal");
-    pdf.setFontSize(7);
+    pdf.text(`Rs. ${invoiceMeta.received_amount || 0}`, pageWidth - margin - rightPadding, yPosition, { align: "right" });
     yPosition += 5;
-    pdf.setFont(undefined, "bold");
     pdf.text("Balance", receivedX, yPosition);
-    pdf.text(`₹ ${(totalAmount - (invoiceMeta.received_amount || 0)).toFixed(2)}`, receivedX + 40, yPosition);
-    yPosition += 12;
+    pdf.text(`Rs. ${(totalAmount - (invoiceMeta.received_amount || 0)).toFixed(2)}`, pageWidth - margin - rightPadding, yPosition, { align: "right" });
 
-    // ===== FOOTER (3-Column) =====
-    // Footer background
-    pdf.setFillColor(240, 240, 240);
-    pdf.rect(margin, yPosition, pageWidth - 2 * margin, 35, "F");
+      yPosition += 12;
 
-    const footerColWidth = (pageWidth - 2 * margin - 10) / 3;
-    const footerY = yPosition + 3;
+      // ===== FOOTER (3-Column Layout from Preview) =====
+      // Background for footer
+      pdf.setFillColor(245, 245, 245);
+      pdf.rect(margin, yPosition, pageWidth - 2 * margin, 40, "F");
+      
+      const footerColWidth = (pageWidth - 2 * margin) / 3;
+      const footerY = yPosition + 6;
 
-    // Left Column - Payment Mode
-    pdf.setFont(undefined, "bold");
-    pdf.setFontSize(8);
-    pdf.text("Payment Mode:", margin + 3, footerY);
-    pdf.setFont(undefined, "normal");
-    pdf.setFontSize(7);
-    pdf.text("Online – QR Code", margin + 3, footerY + 4);
-    pdf.setFont(undefined, "bold");
-    pdf.text("Pay To:", margin + 3, footerY + 10);
-    pdf.setFontSize(6);
-    pdf.setFont(undefined, "normal");
-    pdf.text(`Bank: ${hospitalDetails?.bank_name || defaultDetails.bank_name}`, margin + 3, footerY + 14);
-    pdf.text(`Acc: ${hospitalDetails?.account_no || defaultDetails.account_no}`, margin + 3, footerY + 17);
-    pdf.text(`IFSC: ${hospitalDetails?.ifsc_code || defaultDetails.ifsc_code}`, margin + 3, footerY + 20);
+      // Col 1: Payment Mode
+      pdf.setFontSize(8);
+      pdf.setFont(undefined, "bold");
+      pdf.text("Payment Mode:", margin + 4, footerY);
+      pdf.setFont(undefined, "normal");
+      pdf.text("Online – QR Code", margin + 4, footerY + 5);
+      pdf.setFont(undefined, "bold");
+      pdf.text("Pay To:", margin + 4, footerY + 12);
+      pdf.setFontSize(7);
+      pdf.setFont(undefined, "normal");
+      pdf.text(`Bank: ${hospitalDetails?.bank_name || defaultDetails.bank_name}`, margin + 4, footerY + 17);
+      pdf.text(`Acc: ${hospitalDetails?.account_no || defaultDetails.account_no}`, margin + 4, footerY + 21);
+      pdf.text(`IFSC: ${hospitalDetails?.ifsc_code || defaultDetails.ifsc_code}`, margin + 4, footerY + 25);
+      pdf.text(`Holder: ${hospitalDetails?.saving_current || "GENELIFE PLUS"}`, margin + 4, footerY + 29);
 
-    // Center Column - QR Code
-    const qrCenterX = margin + footerColWidth + 8;
-    pdf.setFont(undefined, "bold");
-    pdf.setFontSize(8);
-    pdf.text("Scan & Pay:", qrCenterX, footerY);
-    pdf.setFontSize(7);
-    pdf.setFont(undefined, "normal");
-    pdf.text("GENELIFE PLUS", qrCenterX, footerY + 4);
-    pdf.setFontSize(6);
-    pdf.text("TID: 39805582", qrCenterX, footerY + 7);
-    pdf.addImage(qrImg, "JPEG", qrCenterX - 5, footerY + 10, 22, 22);
+      // Col 2: QR Code
+      const qrCenterX = margin + footerColWidth;
+      pdf.setFontSize(8);
+      pdf.setFont(undefined, "bold");
+      pdf.text("Scan & Pay:", qrCenterX + footerColWidth/2, footerY, { align: "center" });
+      pdf.text("GENELIFE PLUS", qrCenterX + footerColWidth/2, footerY + 5, { align: "center" });
+      pdf.setFont(undefined, "normal");
+      pdf.setFontSize(7);
+      pdf.text("TID: 39805582", qrCenterX + footerColWidth/2, footerY + 9, { align: "center" });
+      pdf.addImage(qrImg, "JPEG", qrCenterX + (footerColWidth - 22)/2, footerY + 12, 22, 22);
 
-    // Right Column - Signature
-    const sigX = margin + 2 * footerColWidth + 13;
-    pdf.setFont(undefined, "bold");
-    pdf.setFontSize(8);
-    pdf.text("For GENELIFE PLUS", sigX, footerY);
-    pdf.line(sigX, footerY + 18, sigX + 25, footerY + 18);
-    pdf.setFontSize(6);
-    pdf.setFont(undefined, "normal");
-    pdf.text("Authorized Signatory", sigX, footerY + 22);
+      // Col 3: Signature
+      const sigX = margin + 2 * footerColWidth;
+      pdf.setFontSize(8);
+      pdf.setFont(undefined, "bold");
+      pdf.text("For GENELIFE PLUS", pageWidth - margin - 4, footerY, { align: "right" });
+      pdf.line(pageWidth - margin - 30, footerY + 25, pageWidth - margin - 4, footerY + 25);
+      pdf.setFontSize(7);
+      pdf.setFont(undefined, "normal");
+      pdf.text("Authorized Signatory", pageWidth - margin - 4, footerY + 30, { align: "right" });
 
-    // Save PDF
-    pdf.save(`Invoice_${invoiceMeta.invoice_no || "proforma"}.pdf`);
-  } catch (err) {
-    console.error("PDF download error:", err);
-    alert("Failed to download PDF: " + err.message);
-  }
-};
+      // Save PDF
+      pdf.save(`Invoice_${invoiceMeta.invoice_no || "proforma"}.pdf`);
+    } catch (err) {
+      console.error("PDF download error:", err);
+      alert("Failed to download PDF: " + err.message);
+    }
+  };
 
 const handleDownloadWord = async () => {
     try {
@@ -705,7 +744,7 @@ const handleDownloadWord = async () => {
                 width: { size: 3500, type: WidthType.DXA }
               }),
               new TableCell({
-                children: [new Paragraph({ text: `₹${r.test_price?.toFixed(2) || "0.00"}`, alignment: AlignmentType.RIGHT })],
+                children: [new Paragraph({ text: `Rs.${r.test_price?.toFixed(2) || "0.00"}`, alignment: AlignmentType.RIGHT })],
                 shading: isAlternate ? { fill: "F5F5F5" } : { fill: "FFFFFF" },
                 width: { size: 1200, type: WidthType.DXA }
               })
@@ -755,7 +794,7 @@ const handleDownloadWord = async () => {
                 }),
                 new TableCell({
                   width: { size: 2400, type: WidthType.DXA },
-                  children: [new Paragraph({ text: `₹ ${subtotal.toFixed(2)}`, alignment: AlignmentType.RIGHT })],
+                  children: [new Paragraph({ text: `Rs. ${subtotal.toFixed(2)}`, alignment: AlignmentType.RIGHT })],
                   borders: {
                     top: { style: BorderStyle.NONE },
                     bottom: { style: BorderStyle.NONE },
@@ -779,7 +818,7 @@ const handleDownloadWord = async () => {
                 }),
                 new TableCell({
                   width: { size: 2400, type: WidthType.DXA },
-                  children: [new Paragraph({ text: `₹ ${sgstAmount.toFixed(2)}`, alignment: AlignmentType.RIGHT })],
+                  children: [new Paragraph({ text: `Rs. ${sgstAmount.toFixed(2)}`, alignment: AlignmentType.RIGHT })],
                   borders: {
                     top: { style: BorderStyle.NONE },
                     bottom: { style: BorderStyle.NONE },
@@ -803,7 +842,7 @@ const handleDownloadWord = async () => {
                 }),
                 new TableCell({
                   width: { size: 2400, type: WidthType.DXA },
-                  children: [new Paragraph({ text: `₹ ${cgstAmount.toFixed(2)}`, alignment: AlignmentType.RIGHT })],
+                  children: [new Paragraph({ text: `Rs. ${cgstAmount.toFixed(2)}`, alignment: AlignmentType.RIGHT })],
                   borders: {
                     top: { style: BorderStyle.NONE },
                     bottom: { style: BorderStyle.NONE },
@@ -1563,7 +1602,7 @@ const handleDownloadWord = async () => {
                 <td className="text-center">{r.date ? new Date(r.date).toLocaleDateString('en-IN') : ""}</td>
                 <td>{r.patient_name || r.patient || ""}</td>
                 <td>{Array.isArray(r.test_name) ? r.test_name.join(", ") : r.test_name}</td>
-                <td className="text-right"><strong>₹{r.test_price?.toFixed(2) || "0.00"}</strong></td>
+                <td className="text-right"><strong>Rs.{r.test_price?.toFixed(2) || "0.00"}</strong></td>
               </tr>
             ))
           )}
@@ -1579,22 +1618,22 @@ const handleDownloadWord = async () => {
       <div className="invoice-totals">
         <div className="invoice-total-row">
           <span><strong>Sub Total</strong></span>
-          <span><strong>₹{subtotal.toFixed(2)}</strong></span>
+          <span><strong>Rs.{subtotal.toFixed(2)}</strong></span>
         </div>
         <div className="invoice-total-row">
           <span><strong>SGST@{invoiceMeta.sgst || 0}%</strong></span>
-          <span><strong>₹{(sgstAmount||0).toFixed(2)}</strong></span>
+          <span><strong>Rs.{(sgstAmount||0).toFixed(2)}</strong></span>
         </div>
         <div className="invoice-total-row">
           <span><strong>CGST@{invoiceMeta.cgst || 0}%</strong></span>
-          <span><strong>₹{(cgstAmount||0).toFixed(2)}</strong></span>
+          <span><strong>Rs.{(cgstAmount||0).toFixed(2)}</strong></span>
         </div>
       </div>
 
       {/* Total Box */}
       <div className="invoice-total-box">
         <span>TOTAL</span>
-        <span>₹ {totalAmount.toFixed(2)}</span>
+        <span>Rs. {totalAmount.toFixed(2)}</span>
       </div>
 
       {/* Top Row: Terms And Conditions (Left) | Received & Balance (Right) */}
@@ -1609,11 +1648,11 @@ const handleDownloadWord = async () => {
         <div style={{ flex: 1 }}>
           <div className="invoice-total-row">
             <span><strong>Received</strong></span>
-            <span><strong>₹ {invoiceMeta.received_amount || 0}</strong></span>
+            <span><strong>Rs. {invoiceMeta.received_amount || 0}</strong></span>
           </div>
           <div className="invoice-total-row">
             <span><strong>Balance</strong></span>
-            <span><strong>₹ {(totalAmount - (invoiceMeta.received_amount || 0)).toFixed(2)}</strong></span>
+            <span><strong>Rs. {(totalAmount - (invoiceMeta.received_amount || 0)).toFixed(2)}</strong></span>
           </div>
         </div>
       </div>
