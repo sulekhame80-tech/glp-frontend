@@ -88,6 +88,31 @@ function Content() {
     }
   };
 
+  const audioWaveStyles = `
+    @keyframes audio-wave {
+      0%, 100% { height: 5px; }
+      50% { height: 20px; }
+    }
+    .audio-wave-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      height: 20px;
+    }
+    .wave-bar {
+      width: 3px;
+      background-color: white;
+      border-radius: 2px;
+      animation: audio-wave 1s ease-in-out infinite;
+    }
+    .wave-bar:nth-child(1) { animation-delay: 0.1s; }
+    .wave-bar:nth-child(2) { animation-delay: 0.3s; }
+    .wave-bar:nth-child(3) { animation-delay: 0.5s; }
+    .wave-bar:nth-child(4) { animation-delay: 0.2s; }
+    .wave-bar:nth-child(5) { animation-delay: 0.4s; }
+  `;
+
   return (
 
     <div style={{
@@ -98,6 +123,7 @@ function Content() {
       width: '100%',
       backgroundColor: '#f0f8ff' // keeping this to match landing page, but can revert if needed
     }}>
+      <style>{audioWaveStyles}</style>
       <div style={{
         width: '100%',
         maxWidth: '450px',
@@ -171,19 +197,15 @@ function Content() {
             </div>
           </Form.Group>
 
-          <Button type="submit" className="w-100 py-2" disabled={isLoading}>
+          <Button type="submit" className="w-100 py-2" disabled={isLoading} style={{ position: 'relative' }}>
             {isLoading ? (
-              <>
-                <Spinner
-                  as="span"
-                  animation="border"
-                  size="sm"
-                  role="status"
-                  aria-hidden="true"
-                  className="me-2"
-                />
-                Signing in...
-              </>
+              <div className="audio-wave-container">
+                <div className="wave-bar"></div>
+                <div className="wave-bar"></div>
+                <div className="wave-bar"></div>
+                <div className="wave-bar"></div>
+                <div className="wave-bar"></div>
+              </div>
             ) : (
               "Sign In"
             )}
