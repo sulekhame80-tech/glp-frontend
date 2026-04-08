@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import './LandingPage.css';
-import { sendContactEmailApi } from '../api/endpoint';
 
 const LandingPage = () => {
     const [scrolled, setScrolled] = useState(false);
@@ -21,20 +20,43 @@ const LandingPage = () => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleFormSubmit = async (e) => {
+    const handleFormSubmit = (e) => {
         e.preventDefault();
 
-        try {
-            const response = await sendContactEmailApi(formData);
-            if (response.status === 200) {
-                setSubmitted(true);
-                setTimeout(() => setSubmitted(false), 3000);
-                setFormData({ name: '', phone: '', email: '', message: '' });
-            }
-        } catch (error) {
-            console.error("Error sending contact email:", error);
-            alert("Failed to send message. Please try again later.");
-        }
+        setSubmitted(true);
+        
+        // Construct professional mailto URL for redirect with data
+        const subject = encodeURIComponent(`GENELIFE PLUS: Collection Request from ${formData.name} (${formData.phone})`);
+        
+        const emailBody = 
+`GENELIFE PLUS DIAGNOSTIC LABORATORY
+==========================================
+NEW CONTACT / HOME COLLECTION REQUEST
+==========================================
+
+PATIENT DETAILS:
+----------------
+Name    : ${formData.name}
+Phone   : ${formData.phone}
+Email   : ${formData.email || 'Not Provided'}
+
+REQUEST DETAILS:
+----------------
+${formData.message}
+
+------------------------------------------
+Submitted on: ${new Date().toLocaleString()}
+Source      : GeneLife Plus Official Website
+==========================================`;
+        
+        const mailtoUrl = `mailto:genelifeplusho@gmail.com?subject=${subject}&body=${encodeURIComponent(emailBody)}`;
+        
+        // Show success message briefly before redirecting to mail app
+        setTimeout(() => {
+            setSubmitted(false);
+            window.location.href = mailtoUrl;
+            setFormData({ name: '', phone: '', email: '', message: '' });
+        }, 1500);
     };
 
     const scrollToSection = (id) => {
@@ -101,7 +123,7 @@ const LandingPage = () => {
                         <div className="glp-hero-trust">
                             <div className="glp-trust-item"><span className="glp-trust-icon">🏢</span><div><strong>UDYAM</strong><small>TN-11-0043691</small></div></div>
                             <div className="glp-trust-item"><span className="glp-trust-icon">📋</span><div><strong>GST IN</strong><small>33FRGPS4137A1Z0</small></div></div>
-                            <div className="glp-trust-item"><span className="glp-trust-icon">📧</span><div><strong>Email</strong><small>genelifeplus@gmail.com</small></div></div>
+                            <div className="glp-trust-item"><span className="glp-trust-icon">📧</span><div><strong>Email</strong><small>genelifeplusho@gmail.com</small></div></div>
                         </div>
                         <div className="glp-hero-actions">
                             <button className="glp-btn-primary" onClick={() => scrollToSection('contact')}>
@@ -287,7 +309,7 @@ const LandingPage = () => {
                     <div className="glp-contact-grid">
                         <div className="glp-contact-form-wrap">
                             <h3>Send Us a Message</h3>
-                            {submitted && <div className="glp-success-msg">✅ Thank you! We'll reach out to you shortly.</div>}
+                            {submitted && <div className="glp-success-msg">✅ Thank you! Redirecting to your mail app...</div>}
                             <form className="glp-contact-form" onSubmit={handleFormSubmit}>
                                 <div className="glp-form-row">
                                     <div className="glp-form-group">
@@ -318,7 +340,7 @@ const LandingPage = () => {
                                     <div className="glp-ci-icon">📧</div>
                                     <div>
                                         <strong>Email Us</strong>
-                                        <a href="mailto:genelifeplus@gmail.com">genelifeplus@gmail.com</a>
+                                        <a href="mailto:genelifeplusho@gmail.com">genelifeplusho@gmail.com</a>
                                     </div>
                                 </div>
                                 <div className="glp-contact-item">
@@ -379,7 +401,7 @@ const LandingPage = () => {
                             </div>
                         </div>
                         <div className="glp-footer-contact">
-                            <a href="mailto:genelifeplus@gmail.com">genelifeplus@gmail.com</a>
+                            <a href="mailto:genelifeplusho@gmail.com">genelifeplusho@gmail.com</a>
                             <a href="tel:+919626262630">96262 62630</a>
                         </div>
                     </div>
