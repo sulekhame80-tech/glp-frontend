@@ -25,10 +25,10 @@ const LandingPage = () => {
 
         setSubmitted(true);
         
-        // Construct professional mailto URL for redirect with data
-        const subject = encodeURIComponent(`GENELIFE PLUS: Collection Request from ${formData.name} (${formData.phone})`);
+        const subjectStr = `GENELIFE PLUS: Collection Request from ${formData.name} (${formData.phone})`;
+        const subject = encodeURIComponent(subjectStr);
         
-        const emailBody = 
+        const emailBodyStr = 
 `GENELIFE PLUS DIAGNOSTIC LABORATORY
 ==========================================
 NEW CONTACT / HOME COLLECTION REQUEST
@@ -49,12 +49,24 @@ Submitted on: ${new Date().toLocaleString()}
 Source      : GeneLife Plus Official Website
 ==========================================`;
         
-        const mailtoUrl = `mailto:genelifeplusho@gmail.com?subject=${subject}&body=${encodeURIComponent(emailBody)}`;
+        const encodedBody = encodeURIComponent(emailBodyStr);
+
+        // Detect if the user is on a mobile device
+        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
         
-        // Show success message briefly before redirecting to mail app
+        let finalUrl;
+        if (isMobile) {
+            // Use mailto for mobile to trigger native app
+            finalUrl = `mailto:genelifeplusho@gmail.com?subject=${subject}&body=${encodedBody}`;
+        } else {
+            // Use Gmail web interface for desktop
+            finalUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=genelifeplusho@gmail.com&su=${subject}&body=${encodedBody}`;
+        }
+        
+        // Show success message briefly before redirecting
         setTimeout(() => {
             setSubmitted(false);
-            window.location.href = mailtoUrl;
+            window.location.href = finalUrl;
             setFormData({ name: '', phone: '', email: '', message: '' });
         }, 1500);
     };
