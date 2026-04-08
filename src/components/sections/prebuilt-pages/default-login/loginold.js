@@ -1,6 +1,6 @@
 import React, { useState, Fragment, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Form, InputGroup, Button, Modal } from "react-bootstrap";
+import { Form, InputGroup, Button, Modal, Spinner } from "react-bootstrap";
 import { LoginApi, getusernamebyUserApi } from "../../../api/endpoint"; // your API function
 import { UserContext } from "../../../../UserContext";
 
@@ -9,6 +9,7 @@ function Content() {
   const [show, setShow] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   // Get UserContext functions
@@ -27,6 +28,8 @@ function Content() {
     }
 
     setValidated(true);
+
+    setIsLoading(true);
 
     try {
       // Step 1: Verify username and password
@@ -80,6 +83,8 @@ function Content() {
       }
 
       alert("Login error: " + JSON.stringify(err?.response?.data || err?.message || err));
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -166,8 +171,22 @@ function Content() {
             </div>
           </Form.Group>
 
-          <Button type="submit" className="w-100 py-2">
-            Sign In
+          <Button type="submit" className="w-100 py-2" disabled={isLoading}>
+            {isLoading ? (
+              <>
+                <Spinner
+                  as="span"
+                  animation="border"
+                  size="sm"
+                  role="status"
+                  aria-hidden="true"
+                  className="me-2"
+                />
+                Signing in...
+              </>
+            ) : (
+              "Sign In"
+            )}
           </Button>
         </Form>
       </div>
