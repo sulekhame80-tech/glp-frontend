@@ -107,7 +107,7 @@ export default function LabReceiptSubmit() {
       doc.setTextColor(0, 0, 0);
       doc.setFont(undefined, "bold");
       
-      const title = (data.hospital?.hospital_name || hospitalName || "LAB RECEIPT").toUpperCase();
+      const title = (data.hospital?.hospital_name || hospitalName || "GENELIFEPLUS").toUpperCase();
       doc.text(title, margin, yPosition + 10);
       
       yPosition += 18;
