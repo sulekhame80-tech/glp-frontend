@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
-import { createLabReceiptApi, getLabReceiptPdfApi, getOrdersApi } from "../../../api/endpoint";
-import logo from "../../../../assets/img/dashboard/logo.jpeg";
-import qrCode from "../../../../assets/img/dashboard/qr-code.jpeg";
+import { createLabReceiptApi, getLabReceiptPdfApi, getOrdersApi, getLab_recordByIdApi, getOrderByIdApi } from "../../../api/endpoint";
 
 function numberToWords(num) {
   if (!num && num !== 0) return "";
@@ -23,33 +21,16 @@ function numberToWords(num) {
   return (result.trim()+" Rupees Only").replace(/\s+/g," ");
 }
 
-const DEFAULT_COMPANY_DETAILS = {
-  hospital_name: "GENELIFE PLUS",
-  phone: "7639393689",
-  email: "genelifeplus@gmail.com",
-  gstin: "33FRGPS4137A1Z0",
-  bank_name: "HDFC BANK LTD",
-  account_no: "50200089204348",
-  ifsc_code: "HDFC0000351",
-  branch_name: "HDFC Bank",
-  address: "AUTHORISED COLLECTION CENTRE I,4FOR MEDGENOME LABS LTD."
-};
-
-function loadImage(src) {
-  return new Promise((resolve) => {
-    const img = new Image();
-    img.crossOrigin = "anonymous";
-    img.onload = () => resolve(img);
-    img.src = src;
-  });
-}
-
 export default function LabReceiptSubmit() {
   const [orders, setOrders] = useState([]);
   const [orderId, setOrderId] = useState("");
   const [age, setAge] = useState("");
   const [sex, setSex] = useState("");
+  const [patientName, setPatientName] = useState("");
+  const [hospitalName, setHospitalName] = useState("");
+  const [doctorName, setDoctorName] = useState("");
   const [loading, setLoading] = useState(false);
+  const [fetchingDetails, setFetchingDetails] = useState(false);
 
   // Fetch orders for dropdown
   useEffect(() => {
@@ -60,12 +41,46 @@ export default function LabReceiptSubmit() {
     });
   }, []);
 
+  // Fetch record details when Order ID changes (Frontend-only chaining)
+  useEffect(() => {
+    if (orderId) {
+      setFetchingDetails(true);
+      // 1. Get the Lab Record to find the Patient Details PK
+      getLab_recordByIdApi(orderId).then(res => {
+        const labRecord = res.data;
+        if (labRecord) {
+          setHospitalName(labRecord.clinician_name || ""); // Hospital Master Name
+          
+          // 2. Get the full Order Details (Age, Sex, Referring Doctor)
+          if (labRecord.patient_id) {
+            getOrderByIdApi(labRecord.patient_id).then(orderRes => {
+              const orderData = orderRes.data;
+              if (orderData) {
+                setPatientName(orderData.patient_name || "");
+                setAge(orderData.age || "");
+                setSex(orderData.sex || "");
+                setDoctorName(orderData.clinician_name || ""); // Referring Doctor Name
+              }
+            }).catch(err => console.error("Error fetching order details:", err));
+          }
+        }
+      }).catch(err => {
+        console.error("Error fetching lab record:", err);
+      }).finally(() => {
+        setFetchingDetails(false);
+      });
+    } else {
+      setPatientName("");
+      setHospitalName("");
+      setDoctorName("");
+      setAge("");
+      setSex("");
+    }
+  }, [orderId]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!orderId) {
-      alert("Please select Order ID");
-      return;
-    }
+    if (!orderId) return;
     setLoading(true);
 
     try {
@@ -87,45 +102,21 @@ export default function LabReceiptSubmit() {
       const margin = 14;
       let yPosition = margin;
 
-      const logoImg = await loadImage(logo);
-      const qrImg = await loadImage(qrCode);
-      const defaultDetails = DEFAULT_COMPANY_DETAILS;
-
-      // ===== HEADER SECTION =====
-      const logoWidth = 35;
-      const logoHeight = 22;
-      doc.addImage(logoImg, "JPEG", margin, yPosition, logoWidth, logoHeight);
-      yPosition += logoHeight + 4;
-
+      // ===== HEADER SECTION (DYNAMIC HOSPITAL NAME) =====
       doc.setFontSize(22);
-      doc.setTextColor(40, 140, 76);
-      doc.setFont(undefined, "bold");
-      doc.text("GENELIFE PLUS", margin, yPosition);
-
-      doc.setFontSize(18);
-      doc.setTextColor(66, 183, 213);
-      doc.text("MEDGENOME", pageWidth - margin, margin + 5, { align: "right" });
-
-      yPosition += 6;
-      doc.setFontSize(8);
       doc.setTextColor(0, 0, 0);
       doc.setFont(undefined, "bold");
-      doc.text("(AUTHORISED COLLECTION CENTRE FOR MEDGENOME LABS LTD.)", margin, yPosition);
-      yPosition += 4;
-      doc.setFont(undefined, "normal");
-      doc.text(`Phone no. : ${defaultDetails.phone}`, margin, yPosition);
-      yPosition += 4;
-      doc.text(`Email: ${defaultDetails.email}`, margin, yPosition);
-      yPosition += 4;
-      doc.text(`GSTIN: ${defaultDetails.gstin}`, margin, yPosition);
-      yPosition += 6;
-
-      doc.setDrawColor(150, 120, 180);
-      doc.setLineWidth(0.5);
+      
+      const title = (data.hospital?.hospital_name || hospitalName || "LAB RECEIPT").toUpperCase();
+      doc.text(title, margin, yPosition + 10);
+      
+      yPosition += 18;
+      doc.setDrawColor(200);
+      doc.setLineWidth(0.3);
       doc.line(margin, yPosition, pageWidth - margin, yPosition);
       yPosition += 8;
 
-      doc.setFontSize(18);
+      doc.setFontSize(16);
       doc.setTextColor(0, 191, 255);
       doc.setFont(undefined, "bold");
       doc.text("LAB RECEIPT", pageWidth / 2, yPosition, { align: "center" });
@@ -137,8 +128,7 @@ export default function LabReceiptSubmit() {
       const boxHeight = 28;
       const headerHeight = 7;
 
-      // Left Box: Patient Details
-      doc.setFillColor(160, 120, 180);
+      doc.setFillColor(0, 191, 255);
       doc.rect(margin, yPosition, colWidth, headerHeight, "F");
       doc.setTextColor(255, 255, 255);
       doc.setFontSize(9);
@@ -147,16 +137,16 @@ export default function LabReceiptSubmit() {
       doc.rect(margin, yPosition, colWidth, boxHeight);
       doc.setTextColor(0, 0, 0);
       doc.setFont(undefined, "bold");
-      doc.text(data.patient?.name || "N/A", margin + 3, yPosition + headerHeight + 5);
+      doc.text(data.patient?.name || patientName || "N/A", margin + 3, yPosition + headerHeight + 5);
       doc.setFont(undefined, "normal");
       doc.setFontSize(8);
-      doc.text(`Age: ${data.patient?.age || ""}`, margin + 3, yPosition + headerHeight + 10);
-      doc.text(`Sex: ${data.patient?.sex || ""}`, margin + 30, yPosition + headerHeight + 10);
+      doc.text(`Age: ${data.patient?.age || age || ""}`, margin + 3, yPosition + headerHeight + 10);
+      doc.text(`Sex: ${data.patient?.sex || sex || ""}`, margin + 30, yPosition + headerHeight + 10);
       doc.text(`Mobile: ${data.patient?.mobile_no || ""}`, margin + 3, yPosition + headerHeight + 15);
+      doc.text(`Doctor: ${doctorName || "N/A"}`, margin + 3, yPosition + headerHeight + 20);
 
-      // Right Box: Receipt Details
       const rightColX = margin + colWidth + colGap;
-      doc.setFillColor(160, 120, 180);
+      doc.setFillColor(0, 191, 255);
       doc.rect(rightColX, yPosition, colWidth, headerHeight, "F");
       doc.setTextColor(255, 255, 255);
       doc.setFontSize(9);
@@ -167,7 +157,7 @@ export default function LabReceiptSubmit() {
       doc.setFont(undefined, "bold");
       doc.text("Order ID:", rightColX + 3, yPosition + headerHeight + 5);
       doc.setFont(undefined, "normal");
-      doc.text(`${data.order_id || ""}`, rightColX + 25, yPosition + headerHeight + 5);
+      doc.text(`${data.order_id || orderId || ""}`, rightColX + 25, yPosition + headerHeight + 5);
       doc.setFont(undefined, "bold");
       doc.text("Date:", rightColX + 3, yPosition + headerHeight + 10);
       doc.setFont(undefined, "normal");
@@ -179,7 +169,6 @@ export default function LabReceiptSubmit() {
 
       yPosition += boxHeight + 10;
 
-      // ===== TEST TABLE =====
       autoTable(doc, {
         startY: yPosition,
         head: [["#", "Test Name"]],
@@ -194,7 +183,6 @@ export default function LabReceiptSubmit() {
       yPosition = doc.lastAutoTable.finalY + 8;
       const rightPadding =  2;
 
-      // ===== SUMMARY =====
       doc.setFontSize(10);
       doc.setFont(undefined, "bold");
       doc.text("Total Amount", pageWidth - margin - 50, yPosition);
@@ -205,33 +193,15 @@ export default function LabReceiptSubmit() {
       doc.setFontSize(8);
       doc.text(`Amount in Words: Rs. ${numberToWords(Math.round(data.total_amount))}`, margin, yPosition);
 
-      yPosition += 10;
-
-      // ===== FOOTER =====
-      doc.setFillColor(245, 245, 245);
-      doc.rect(margin, yPosition, pageWidth - 2 * margin, 40, "F");
-      const footerColWidth = (pageWidth - 2 * margin) / 3;
-      const footerY = yPosition + 6;
-
-      doc.setFontSize(8);
-      doc.setFont(undefined, "bold");
-      doc.text("Payment Info:", margin + 4, footerY);
+      yPosition += 30;
+      doc.setFontSize(9);
       doc.setFont(undefined, "normal");
-      doc.text("Lab Collection Receipt", margin + 4, footerY + 5);
-      doc.text(`Company: ${defaultDetails.hospital_name}`, margin + 4, footerY + 12);
-      doc.text(`Contact: ${defaultDetails.phone}`, margin + 4, footerY + 16);
+      doc.text("This is a computer generated document.", margin, yPosition);
+      
+      doc.text("Authorized Signatory", pageWidth - margin - 4, yPosition, { align: "right" });
+      doc.line(pageWidth - margin - 40, yPosition - 5, pageWidth - margin - 4, yPosition - 5);
 
-      const qrCenterX = margin + footerColWidth;
-      doc.setFont(undefined, "bold");
-      doc.text("Scan & Pay:", qrCenterX + footerColWidth/2, footerY, { align: "center" });
-      doc.addImage(qrImg, "JPEG", qrCenterX + (footerColWidth - 22)/2, footerY + 5, 22, 22);
-
-      const sigX = margin + 2 * footerColWidth;
-      doc.text("For GENELIFE PLUS", pageWidth - margin - 4, footerY, { align: "right" });
-      doc.line(pageWidth - margin - 30, footerY + 25, pageWidth - margin - 4, footerY + 25);
-      doc.text("Authorized Signatory", pageWidth - margin - 4, footerY + 30, { align: "right" });
-
-      doc.save(`LAB_RECEIPT_${data.order_id}.pdf`);
+      doc.save(`LAB_RECEIPT_${data.order_id || orderId}.pdf`);
       console.log("✅ PDF generated successfully!");
     } catch (err) {
       console.error("❌ ERROR generating PDF:", err);
@@ -242,48 +212,114 @@ export default function LabReceiptSubmit() {
   };
 
   return (
-    <div className="ms-panel mt-4" style={{ background: "#fff", padding: "20px", borderRadius: "8px", boxShadow: "0 0 10px rgba(0,0,0,0.1)" }}>
-      <div className="ms-panel-header">
-        <h6 style={{ color: "#288C4C" }}>Lab Receipt Generator</h6>
+    <div className="ms-panel mt-4" style={{ 
+      background: "#fff", 
+      padding: "30px", 
+      borderRadius: "15px", 
+      boxShadow: "0 10px 30px rgba(0,0,0,0.05)",
+      maxWidth: "600px",
+      margin: "auto"
+    }}>
+      <div className="ms-panel-header text-center mb-4">
+        <h4 style={{ color: "#288C4C", fontWeight: "700" }}>Lab Receipt Generator</h4>
+        <p className="text-muted small">Sequential Billing Process</p>
       </div>
+      
       <div className="ms-panel-body">
-        <div className="lr-container" style={{ marginBottom: "20px" }}>
-          <form className="lr-form" onSubmit={handleSubmit}>
-            <div className="lr-group mb-3">
-              <label className="form-label">Order ID</label>
-              <select
-                className="form-select"
-                value={orderId}
-                onChange={(e) => setOrderId(e.target.value)}
+        <form onSubmit={handleSubmit}>
+          {/* STEP 1: SELECT ORDER */}
+          <div className="mb-4">
+            <label className="form-label mb-1" style={{ fontWeight: "600", fontSize: "0.9rem" }}>1. Select Order ID</label>
+            <select
+              className="form-select"
+              value={orderId}
+              onChange={(e) => setOrderId(e.target.value)}
+              style={{ border: "2px solid #00BFFF", borderRadius: "8px" }}
+            >
+              <option value="">-- Choose Order --</option>
+              {orders.map((o) => (
+                <option key={o} value={o}>{o}</option>
+              ))}
+            </select>
+          </div>
+
+          {/* STEP 2: AGE (Show if orderId is selected) */}
+          {orderId && !fetchingDetails && (
+            <div className="mb-4 animate__animated animate__fadeIn">
+              <label className="form-label mb-1" style={{ fontWeight: "600", fontSize: "0.9rem" }}>2. Confirm Age</label>
+              <input 
+                type="number"
+                className="form-control"
+                value={age}
+                onChange={(e) => setAge(e.target.value)}
+                placeholder="Enter patient age"
+                style={{ border: "2px solid #00BFFF", borderRadius: "8px" }}
+              />
+            </div>
+          )}
+
+          {/* STEP 3: GENDER (Show if age is entered) */}
+          {age && (
+            <div className="mb-4 animate__animated animate__fadeIn">
+              <label className="form-label mb-1" style={{ fontWeight: "600", fontSize: "0.9rem" }}>3. Select Gender</label>
+              <select 
+                className="form-select" 
+                value={sex} 
+                onChange={(e) => setSex(e.target.value)}
+                style={{ border: "2px solid #00BFFF", borderRadius: "8px" }}
               >
-                <option value="">--Select Order--</option>
-                {orders.map((o) => (
-                  <option key={o} value={o}>
-                    {o}
-                  </option>
-                ))}
+                <option value="">-- Select --</option>
+                <option value="M">Male</option>
+                <option value="F">Female</option>
+                <option value="O">Other</option>
               </select>
             </div>
-            <div className="row mb-3">
-              <div className="col-md-6">
-                <label className="form-label">Age</label>
-                <input className="form-control" value={age} onChange={(e) => setAge(e.target.value)} />
+          )}
+
+          {/* STEP 4: PREVIEW (Show if gender is selected) */}
+          {sex && (
+            <div className="preview-section mb-4 animate__animated animate__zoomIn" style={{
+              background: "#F8F9FA",
+              padding: "20px",
+              borderRadius: "12px",
+              border: "1px dashed #00BFFF"
+            }}>
+              <h6 className="mb-3 text-center" style={{ color: "#00BFFF", fontWeight: "700" }}>Final Preview</h6>
+              <div className="row g-3 small">
+                <div className="col-12 border-bottom pb-2">
+                  <span className="text-muted">Patient:</span> <strong className="float-end">{patientName || "N/A"}</strong>
+                </div>
+                <div className="col-6 border-bottom pb-2">
+                  <span className="text-muted">Age:</span> <strong className="float-end">{age}</strong>
+                </div>
+                <div className="col-6 border-bottom pb-2">
+                  <span className="text-muted">Gender:</span> <strong className="float-end">{sex}</strong>
+                </div>
+                <div className="col-12 border-bottom pb-2">
+                  <span className="text-muted">Hospital:</span> <strong className="float-end">{hospitalName || "N/A"}</strong>
+                </div>
+                <div className="col-12 pb-1">
+                  <span className="text-muted">Doctor:</span> <strong className="float-end">{doctorName || "N/A"}</strong>
+                </div>
               </div>
-              <div className="col-md-6">
-                <label className="form-label">Sex</label>
-                <select className="form-select" value={sex} onChange={(e) => setSex(e.target.value)}>
-                  <option value="">--Select--</option>
-                  <option value="M">M</option>
-                  <option value="F">F</option>
-                  <option value="O">O</option>
-                </select>
-              </div>
+
+              <button 
+                className="btn btn-primary w-100 mt-4" 
+                type="submit" 
+                disabled={loading} 
+                style={{ 
+                  background: "#00BFFF", 
+                  border: "none",
+                  borderRadius: "8px",
+                  padding: "12px",
+                  fontWeight: "700"
+                }}
+              >
+                {loading ? "Processing..." : "GENERATE BILL"}
+              </button>
             </div>
-            <button className="btn btn-primary w-100" type="submit" disabled={loading} style={{ background: "#00BFFF", border: "none" }}>
-              {loading ? "Processing..." : "Submit & Generate PDF Receipt"}
-            </button>
-          </form>
-        </div>
+          )}
+        </form>
       </div>
     </div>
   );
