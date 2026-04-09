@@ -245,14 +245,11 @@ export const importTestMasterApi = (formData) => {
   });
 };
 
-export const importHospitalApi = (file) => {
-  const formData = new FormData();
-  formData.append("file", file);
-
-  return axios.post(`${API_URL}/api/import-hospital-master/`, formData, {
-    headers: { "Content-Type": "multipart/form-data" }
-  });
+export const importHospitalApi = (formData) => {
+  return axios.post(`${API_URL}/api/import-hospital-master/`, formData);
 };
+
+
 export function createInvoiceApi(data) {
   return axios.post(
     `${API_URL}/api/invoice/create/`,
