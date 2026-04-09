@@ -437,107 +437,124 @@ function Orderslist() {
         {showForm && (
           <div className="modal-backdrop">
             <div className="modal-box">
-              <h4>Add New Order</h4>
-
-              <div className="row g-3">
-                {formFields.map((field) => (
-                  <div className="col-md-4" key={field.key}>
-                    <label><strong>{field.label}</strong></label>
-
-                    {field.key === "history" ? (
-                      <>
-                        <input
-                          type="file"
-                          accept="image/*"
-                          className="form-control"
-                          onChange={(e) =>
-                            setFormData({ ...formData, [field.key]: e.target.files[0] })
-                          }
-                        />
-                        {formData.history && typeof formData.history === "string" && (
-                          <img
-                            src={`data:image/jpeg;base64,${formData.history}`}
-                            alt="History"
-                            style={{ width: "100px", marginTop: "5px", border: "1px solid #ccc" }}
-                          />
-                        )}
-                      </>
-                    ) : field.key === "test_name" ? (
-                      <select
-                        className="form-control"
-                        value={formData.test_name || ""}
-                        onChange={(e) => setFormData({ ...formData, test_name: e.target.value })}
-                      >
-                        <option value="">Select Test Name</option>
-
-                        {Array.isArray(testOptions) && testOptions.length > 0 ? (
-                          testOptions.map((item, i) => {
-                            // Use formatted label [test_code] - test_name as both label and value
-                            const value = `[${item.test_code}] - ${item.test_name}`;
-                            const label = `[${item.test_code}] - ${item.test_name}`;
-                            return (
-                              <option key={item.id ?? i} value={value}>
-                                {label}
-                              </option>
-                            );
-                          })
-                        ) : (
-                          <option value="" disabled>
-                            Loading...
-                          </option>
-                        )}
-                      </select>
-
-
-                    ) : field.key === "clinician_name" ? (
-                      <select
-                        className="form-control"
-                        value={formData.clinician_name || ""}
-                        onChange={(e) =>
-                          setFormData({ ...formData, clinician_name: e.target.value })
-                        }
-                      >
-                        <option value="">Select Clinician</option>
-
-                        {Array.isArray(clinicianOptions) && clinicianOptions.length > 0 ? (
-                          clinicianOptions.map((item, i) => (
-                            <option key={i} value={item.doctor_name}>
-                              {item.doctor_name}
-                            </option>
-                          ))
-                        ) : (
-                          <option value="" disabled>
-                            Loading...
-                          </option>
-                        )}
-                      </select>
-
-
-                    ) : (
-                      <input
-                        type={field.type}
-                        className="form-control"
-                        value={formData[field.key] || ""}
-                        onChange={(e) =>
-                          setFormData({ ...formData, [field.key]: e.target.value })
-                        }
-                      />
-                    )}
-                  </div>
-                ))}
-
+              <div className="modal-header-themed">
+                <h5 className="mb-0 text-white">{formData.id ? "Edit Order" : "Add New Order"}</h5>
+                <button
+                  type="button"
+                  className="close text-white"
+                  onClick={() => {
+                    setShowForm(false);
+                    setFormData({});
+                  }}
+                  style={{ background: 'none', border: 'none', fontSize: '1.5rem', lineHeight: 1 }}
+                >
+                  <span>&times;</span>
+                </button>
               </div>
 
-              <div className="text-end mt-3">
+              <div className="modal-body-themed">
+                <div className="row">
+                  {formFields.map((field) => (
+                    <div className="col-md-4 mb-3" key={field.key}>
+                      <label className="mb-1"><strong>{field.label}</strong></label>
+
+                      {field.key === "history" ? (
+                        <>
+                          <input
+                            type="file"
+                            accept="image/*"
+                            className="form-control"
+                            onChange={(e) =>
+                              setFormData({ ...formData, [field.key]: e.target.files[0] })
+                            }
+                          />
+                          {formData.history && typeof formData.history === "string" && (
+                            <img
+                              src={`data:image/jpeg;base64,${formData.history}`}
+                              alt="History"
+                              className="img-thumbnail mt-2"
+                              style={{ width: "100px", border: "1px solid #ccc" }}
+                            />
+                          )}
+                        </>
+                      ) : field.key === "test_name" ? (
+                        <select
+                          className="form-control"
+                          value={formData.test_name || ""}
+                          onChange={(e) => setFormData({ ...formData, test_name: e.target.value })}
+                        >
+                          <option value="">Select Test Name</option>
+
+                          {Array.isArray(testOptions) && testOptions.length > 0 ? (
+                            testOptions.map((item, i) => {
+                              const value = `[${item.test_code}] - ${item.test_name}`;
+                              const label = `[${item.test_code}] - ${item.test_name}`;
+                              return (
+                                <option key={item.id ?? i} value={value}>
+                                  {label}
+                                </option>
+                              );
+                            })
+                          ) : (
+                            <option value="" disabled>
+                              Loading...
+                            </option>
+                          )}
+                        </select>
+
+
+                      ) : field.key === "clinician_name" ? (
+                        <select
+                          className="form-control"
+                          value={formData.clinician_name || ""}
+                          onChange={(e) =>
+                            setFormData({ ...formData, clinician_name: e.target.value })
+                          }
+                        >
+                          <option value="">Select Clinician</option>
+
+                          {Array.isArray(clinicianOptions) && clinicianOptions.length > 0 ? (
+                            clinicianOptions.map((item, i) => (
+                              <option key={i} value={item.doctor_name}>
+                                {item.doctor_name}
+                              </option>
+                            ))
+                          ) : (
+                            <option value="" disabled>
+                              Loading...
+                            </option>
+                          )}
+                        </select>
+
+
+                      ) : (
+                        <input
+                          type={field.type}
+                          className="form-control"
+                          value={formData[field.key] || ""}
+                          onChange={(e) =>
+                            setFormData({ ...formData, [field.key]: e.target.value })
+                          }
+                        />
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="modal-footer-themed">
                 <button
-                  className="btn btn-secondary me-2"
-                  onClick={() => setShowForm(false)}
+                  className="btn btn-secondary shadow-none"
+                  onClick={() => {
+                    setShowForm(false);
+                    setFormData({});
+                  }}
                   style={{ marginRight: "10px" }}
                 >
                   Cancel
                 </button>
-                <button className="btn btn-success" onClick={() => handleSubmit()}>
-                  Save
+                <button className="btn btn-primary shadow-none" onClick={() => handleSubmit()}>
+                  {formData.id ? "Update Order" : "Save Order"}
                 </button>
               </div>
             </div>
