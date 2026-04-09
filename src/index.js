@@ -1,18 +1,29 @@
+
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 
 // Suppress deprecation warnings from legacy third-party libraries
 const originalError = console.error;
 const originalWarn = console.warn;
-const findDOMNodeWarning = "findDOMNode is deprecated";
-const reactDOMRenderWarning = "ReactDOM.render is no longer supported";
+const suppressedWarnings = [
+  "findDOMNode is deprecated",
+  "ReactDOM.render is no longer supported",
+  "unmountComponentAtNode is deprecated",
+  "Support for defaultProps will be removed from function components",
+  "Support for defaultProps will be removed from memo components"
+];
+
+const shouldSuppress = (args) => {
+  if (typeof args[0] !== 'string') return false;
+  return suppressedWarnings.some(warning => args[0].includes(warning));
+};
 
 console.error = (...args) => {
-  if (typeof args[0] === 'string' && (args[0].includes(findDOMNodeWarning) || args[0].includes(reactDOMRenderWarning))) return;
+  if (shouldSuppress(args)) return;
   originalError(...args);
 };
 console.warn = (...args) => {
-  if (typeof args[0] === 'string' && (args[0].includes(findDOMNodeWarning) || args[0].includes(reactDOMRenderWarning))) return;
+  if (shouldSuppress(args)) return;
   originalWarn(...args);
 };
 
