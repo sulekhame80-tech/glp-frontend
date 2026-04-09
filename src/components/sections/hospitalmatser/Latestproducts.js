@@ -159,7 +159,7 @@ const handleImport = async () => {
     const response = await importHospitalApi(formData);
     console.log("Import Response:", response.data);
 
-    alert(`Imported: ${response.data.created} rows`);
+    alert(`Import Successful: ${response.data.created} Created, ${response.data.updated} Updated`);
     setExcelFile(null);
 
     fetchHospitals();
