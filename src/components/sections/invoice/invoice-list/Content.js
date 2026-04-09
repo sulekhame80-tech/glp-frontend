@@ -1,4 +1,4 @@
-D:\campus connection\glp\glp-backend-main\frontend\src\components\sections\invoice\invoice-list\Content.js     ==>
+
 import React, { useEffect, useState, useMemo } from 'react';
 import Breadcrumb from '../../../layouts/Breadcrumb';
 import DataTable_ from 'react-data-table-component';
