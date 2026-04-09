@@ -1,6 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 
+// Suppress deprecation warnings from legacy third-party libraries
+const originalError = console.error;
+const originalWarn = console.warn;
+const findDOMNodeWarning = "findDOMNode is deprecated";
+const reactDOMRenderWarning = "ReactDOM.render is no longer supported";
+
+console.error = (...args) => {
+  if (typeof args[0] === 'string' && (args[0].includes(findDOMNodeWarning) || args[0].includes(reactDOMRenderWarning))) return;
+  originalError(...args);
+};
+console.warn = (...args) => {
+  if (typeof args[0] === 'string' && (args[0].includes(findDOMNodeWarning) || args[0].includes(reactDOMRenderWarning))) return;
+  originalWarn(...args);
+};
+
 import App from './App';
 
 import reportWebVitals from './reportWebVitals';// Css
@@ -27,13 +42,11 @@ import { UserProvider } from './UserContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <UserProvider>
-        <App />
-      </UserProvider>
-    </BrowserRouter>
-  </React.StrictMode>
+  <BrowserRouter>
+    <UserProvider>
+      <App />
+    </UserProvider>
+  </BrowserRouter>
 );
 
 reportWebVitals();
