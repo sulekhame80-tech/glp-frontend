@@ -1,5 +1,4 @@
-
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState } from 'react';
 import Breadcrumb from '../../../layouts/Breadcrumb';
 import DataTable_ from 'react-data-table-component';
 import DataTableExtensions_ from 'react-data-table-component-extensions';
@@ -59,17 +58,19 @@ function Content() {
   };
 
   return (
-    <div className="ms-content-wrapper">
-      <div className="row">
-        <Breadcrumb pageprev={'Invoice'} pagecurrent={'Invoice List'} />
+    <>
+      <div className="ms-content-wrapper">
+        <div className="row">
+          <Breadcrumb pageprev={'Invoice'} pagecurrent={'Invoice List'} />
         </div>
+
         <div className="col-md-12">
           <div className="ms-panel">
             <div className="ms-panel-header">
               <div className="d-flex justify-content-between align-items-center mb-3">
                 <h6 className="mb-0">Invoice List</h6>
-                <button 
-                  className="btn btn-sm btn-outline-danger" 
+                <button
+                  className="btn btn-sm btn-outline-danger"
                   onClick={handleReset}
                   style={{ borderRadius: '20px', padding: '5px 15px' }}
                 >
@@ -131,12 +132,13 @@ function Content() {
                 </div>
               </div>
             </div>
+
             <div className="ms-panel-body">
               <div className="table-responsive">
                 {DataTableExtensions && columns && data ? (
-                  <DataTableExtensions 
+                  <DataTableExtensions
                     {...tableData}
-                    filter={false} // Disable redundant internal filter
+                    filter={false}
                     export={true}
                     print={true}
                   >
@@ -163,7 +165,7 @@ function Content() {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 
