@@ -146,25 +146,27 @@ const Latestproducts = () => {
 
   ];
 
-  const handleImport = async () => {
-    if (!excelFile) {
-      alert("Please choose an Excel file first!");
-      return;
-    }
+const handleImport = async () => {
+  if (!excelFile) {
+    alert("Please choose an Excel file first!");
+    return;
+  }
 
-    try {
-      const response = await importHospitalApi(excelFile);   // FIXED
-      console.log("Import Response:", response.data);
-      alert(`Imported: ${response.data.created} rows`);
-      setExcelFile(null);
-      fetchHospitals();
+  const formData = new FormData();
+  formData.append("file", excelFile);  // ✅ ONLY HERE
 
-    } catch (error) {
-      console.error("Import Error:", error);
-      alert("Failed to import Excel file.");
-    }
-  };
+  try {
+    const response = await importHospitalApi(formData);
+    console.log("Import Response:", response.data);
 
+    alert(`Imported: ${response.data.created} rows`);
+    setExcelFile(null);
+
+    fetchHospitals();
+  } catch (error) {
+    console.error(error);
+  }
+};
   const handleDelete = async (row) => {
     if (!window.confirm(`Are you sure you want to delete "${row.hospital_name}"?`)) {
       return;
@@ -190,6 +192,7 @@ const Latestproducts = () => {
     // Convert table data exactly with required column names
     const exportData = hospitals.map((row) => ({
       HospitalName: row.hospital_name || "",
+      DoctorName: row.doctor_name || "",
       Address: row.city || "",  // Assuming 'city' is the address
       Phone: row.mobile_no || "",
       Email: row.email_id || "",
@@ -252,10 +255,13 @@ const Latestproducts = () => {
             <>
               <label className="custom-file-upload">
                 ⬆ <input
-                  type="file"
-                  accept=".xlsx, .xls"
-                  onChange={(e) => setExcelFile(e.target.files[0])}
-                />
+  key={excelFile ? excelFile.name : "file"}
+  type="file"
+  accept=".xlsx, .xls"
+  onChange={(e) => {
+    setExcelFile(e.target.files[0]);
+  }}
+/>
               </label>
 
               <button
