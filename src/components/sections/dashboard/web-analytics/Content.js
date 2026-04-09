@@ -16,18 +16,18 @@ class Content extends Component {
         <div className="ms-content-wrapper">
           {/* Top Metric Cards (Entire Screen Width) */}
           <div className="row no-gutters">
-            <div className="col-md-12">
-              <PaymentSummaryTable />
-            </div>
+            // <div className="col-md-12">
+            //   <PaymentSummaryTable />
+            // </div>
           </div>
 
-          // <div className="row mt-3">
-          //   <div className="col-xl-7 col-md-12">
-          //     <Websiteaudience />
-          //     <div className="mt-3">
-          //       <ReportSummary />
-          //     </div>
-          //   </div>
+          <div className="row mt-3">
+            <div className="col-xl-7 col-md-12">
+              <Websiteaudience />
+              <div className="mt-3">
+                <ReportSummary />
+              </div>
+            </div>
 
             <div className="col-xl-5 col-md-12">
               <DashboardCalendar />
