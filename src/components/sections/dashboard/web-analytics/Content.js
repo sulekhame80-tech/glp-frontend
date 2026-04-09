@@ -21,13 +21,13 @@ class Content extends Component {
             </div>
           </div>
 
-          <div className="row mt-3">
-            <div className="col-xl-7 col-md-12">
-              <Websiteaudience />
-              <div className="mt-3">
-                <ReportSummary />
-              </div>
-            </div>
+          // <div className="row mt-3">
+          //   <div className="col-xl-7 col-md-12">
+          //     <Websiteaudience />
+          //     <div className="mt-3">
+          //       <ReportSummary />
+          //     </div>
+          //   </div>
 
             <div className="col-xl-5 col-md-12">
               <DashboardCalendar />
