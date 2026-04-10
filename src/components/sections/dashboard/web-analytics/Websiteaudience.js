@@ -4,7 +4,6 @@ import { Line as LineChart } from 'react-chartjs-2';
 import Channel from './Channel';
 
 import { getDashboadmetricReportApi } from '../../../api/endpoint';
-import PaymentSummaryTable from './Paymentsummary';
 // Removed LabRecordTable from here — it will be rendered in Content.js
 import { UserContext } from "../../../../UserContext";
 
@@ -106,7 +105,6 @@ class Websiteaudience extends Component {
 
     return (
       <div>
-        <PaymentSummaryTable />
 
         <div className="ms-panel">
 
